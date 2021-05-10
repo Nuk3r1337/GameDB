@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "7u+XC9umcGB6psOWhj62PnzJUDwPG6r8WmfcrTQ+D3tIbOmp606e+bfHGsZUjTddDuHRVWOIhUnCOA4Qq76BpA==",
+  "dgSpecHash": "uPFM/dxnledRY1KVgKkUtsIwjmZ4H/3aTSxcgJKriY+ct2ZoKCUN9rOHU9lgSmuxgAD9ED+s3Bn4ZoX+b9FR6w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Legenden\\source\\repos\\Nuk3r1337\\GameDB\\GameDB\\GameDB\\GameDB.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\john2228\\Source\\Repos\\GameDB\\GameDB\\GameDB\\GameDB.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\john2228\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }
