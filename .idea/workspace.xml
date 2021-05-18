@@ -2,111 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="638aca91-2e5f-4283-9591-e44439ad1d15" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/GameDB.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.editorconfig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.env.example" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.idea/GameDBAPI.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.idea/php.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.idea/phpunit.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/.styleci.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Console/Kernel.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Exceptions/Handler.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Controllers/Controller.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Kernel.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Middleware/Authenticate.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Middleware/EncryptCookies.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Middleware/PreventRequestsDuringMaintenance.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Middleware/RedirectIfAuthenticated.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Middleware/TrimStrings.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Middleware/TrustHosts.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Middleware/TrustProxies.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Middleware/VerifyCsrfToken.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Resources/User.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Resources/UserCollection.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Http/Resources/UserResource.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Models/User.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Providers/AppServiceProvider.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Providers/AuthServiceProvider.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Providers/BroadcastServiceProvider.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Providers/EventServiceProvider.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/app/Providers/RouteServiceProvider.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/artisan" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/bootstrap/app.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/bootstrap/cache/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/composer.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/composer.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/app.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/auth.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/broadcasting.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/cache.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/cors.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/database.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/filesystems.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/hashing.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/logging.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/mail.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/queue.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/services.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/session.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/config/view.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/database/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/database/factories/UserFactory.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/database/migrations/2014_10_12_100000_create_password_resets_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/database/migrations/2019_08_19_000000_create_failed_jobs_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/database/seeders/DatabaseSeeder.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/phpunit.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/public/.htaccess" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/public/index.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/public/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/public/web.config" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/resources/css/app.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/resources/js/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/resources/js/bootstrap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/resources/lang/en/auth.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/resources/lang/en/pagination.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/resources/lang/en/passwords.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/resources/lang/en/validation.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/resources/views/welcome.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/routes/api.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/routes/channels.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/routes/console.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/routes/web.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/server.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/storage/app/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/storage/app/public/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/storage/framework/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/storage/framework/cache/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/storage/framework/cache/data/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/storage/framework/sessions/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/storage/framework/testing/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/storage/framework/views/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/storage/logs/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/tests/CreatesApplication.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/tests/Feature/ExampleTest.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/tests/TestCase.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/tests/Unit/ExampleTest.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameDBAPI/webpack.mix.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
-    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+  <component name="ComposerSettings">
     <execution />
   </component>
   <component name="Git.Settings">
@@ -250,38 +155,11 @@
       <path value="$PROJECT_DIR$/vendor/illuminate/auth" />
     </include_path>
   </component>
-  <component name="ProjectId" id="1sewN9uEE6MCYPMVTsoBGn2DhFv" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
   <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-    <property name="vue.rearranger.settings.migration" value="true" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="638aca91-2e5f-4283-9591-e44439ad1d15" name="Default Changelist" comment="" />
-      <created>1621246329694</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1621246329694</updated>
-      <workItem from="1621246340800" duration="848000" />
-    </task>
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <ignored-roots>
-      <path value="$PROJECT_DIR$/.." />
-    </ignored-roots>
   </component>
 </project>
