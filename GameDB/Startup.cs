@@ -43,6 +43,7 @@ namespace GameDB
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSerilogRequestLogging();
             }
             else
             {
@@ -54,7 +55,6 @@ namespace GameDB
             app.UseStaticFiles();
 
             app.UseSession();
-            app.UseSerilogRequestLogging();
 
             app.UseRouting();
 
