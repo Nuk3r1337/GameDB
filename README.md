@@ -7,6 +7,20 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+Personal access client created successfully.
+Client ID: 93795f24-2ae8-4a78-824e-3e9e52e9b72a
+Client secret: 8TYabIjv9QkjQr3l4CqE67BpFw7jAZ98wmyxqKSx
+
+Password grant client created successfully.
+Client ID: 93795f25-7394-4b59-aa60-0c5a638d02fc
+Client secret: 9kdLYWE6kSg3HELfMn2mWggyVHKCsFRFZpfrHItD
+
+
+New client created successfully.
+Client ID: 93797d91-4017-4c0b-bb12-714b220382a1
+Client secret: 6gkwYOtTzaitKvYUCBypzBpeBYCE2c0fcRt9h2KY
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
