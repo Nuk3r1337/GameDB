@@ -1,4 +1,5 @@
 ﻿using GameDB.Domain.DomainClasses;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -7,7 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace GameDB.Service.Middleware
@@ -41,15 +46,24 @@ namespace GameDB.Service.Middleware
                 ops.AuthorizationEndpoint = $"{appSettings.ApiUrl}/oauth/authorize";
                 ops.TokenEndpoint = $"{appSettings.ApiUrl}/oauth/token";
                 ops.SaveTokens = true;
+                ops.UserInformationEndpoint = $"{appSettings.ApiUrl}/api/user";
 
-                //ops.UserInformationEndpoint = $"{appSettings.ApiUrl}/user";
+                ops.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+                ops.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+                ops.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
 
                 ops.Events = new OAuthEvents
                 {
                     OnCreatingTicket = async context =>
                     {
-                        var request = context;
-                    }
+                        var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
+                        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
+                        var response = await context.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted);
+                        response.EnsureSuccessStatusCode();
+                        var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                        context.RunClaimActions(json.RootElement);
+                    },
                 };
             });
         }
