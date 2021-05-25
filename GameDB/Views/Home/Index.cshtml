@@ -2,16 +2,27 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    <div>
-        <video id="video" width="600" height="400" style="border: 1px solid gray"></video>
+<div class="container">
+    <div id="autoBarcode">
+        <h1 class="d-flex justify-content-around row">Scan Here</h1>
+        <div class="d-flex justify-content-around row">
+            <video id="video" class="col-sm-8" style="border: 1px solid gray"></video>
+        </div>
+        <div class="d-flex justify-content-around ">
+            <button class="btn btn-success col-sm-4" id="startButton">Start Scan</button>
+            <button class="btn btn-danger col-sm-4" id="resetButton">Stop Scan</button>
+        </div>
+        <label>Result:</label>
+        <pre><code id="scanResult"></code></pre>
+        <button class="btn btn-primary" id="manualButton">Type Barcode Manually</button>
     </div>
-    <div class="justify-content-around">
-        <button class="btn btn-success" id="startButton">Start Scan</button>
-        <button class="btn btn-warning" id="resetButton">Reset Scan</button>
+    <div id="manualBarcode" style="display:none;">
+        <form>
+            <input type="text" name="Barcode" id="barcodeInput"/>
+            <input type="button" value="Submit" id="barcodeSubmit" class="btn btn-secondary"/>
+        </form>
+        <button class="btn btn-primary" id="autoButton">Scan Barcode Automatically</button>
     </div>
-    <label>Result:</label>
-    <pre><code id="result"></code></pre>
 </div>
 
 @section Scripts
@@ -45,16 +56,17 @@
                     document.getElementById('startButton').addEventListener('click', () => {
                         codeReader.decodeOnceFromVideoDevice(selectedDeviceId, 'video').then((result) => {
                             console.log(result)
-                            document.getElementById('result').textContent = result.text
+                            document.getElementById('scanResult').textContent = result.text;
+                            document.getElementById("barcodeInput").value = result.text;
+                            document.getElementById("barcodeSubmit").click();
                         }).catch((err) => {
                             console.error(err)
-                            document.getElementById('result').textContent = err
+                            document.getElementById('scanResult').textContent = err
                         })
                         console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
                     })
-
                     document.getElementById('resetButton').addEventListener('click', () => {
-                        document.getElementById('result').textContent = '';
+                        document.getElementById('scanResult').textContent = '';
                         codeReader.reset();
                         console.log('Reset.')
                     })
@@ -63,6 +75,20 @@
                 .catch((err) => {
                     console.error(err)
                 })
+        })
+    </script>
+    <script>
+        document.getElementById("manualButton").addEventListener("click", function () {
+            document.getElementById("manualBarcode").style.display = "block";
+            document.getElementById("autoBarcode").style.display = "none";
+        })
+        document.getElementById("autoButton").addEventListener("click", function () {
+            document.getElementById("manualBarcode").style.display = "none";
+            document.getElementById("autoBarcode").style.display = "block";
+        })
+        document.getElementById("barcodeSubmit").addEventListener("click", function () {
+            var code = document.getElementById("barcodeInput").value;
+            alert(code);
         })
     </script>
 }

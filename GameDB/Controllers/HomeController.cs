@@ -6,25 +6,23 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using GameDB.Service;
 
 namespace GameDB.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IGameDbApiManager _gameManager;
+        public HomeController(ILogger<HomeController> logger, IGameDbApiManager gameManager)
         {
+            _gameManager = gameManager;
             _logger = logger;
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            var ok = _gameManager.GetGame(1);
             return View();
         }
 

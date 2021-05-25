@@ -12,6 +12,6 @@ namespace GameDB.Domain.DomainClasses
     }
     public class AppSettings : IAppSettings
     {
-        public string ApiUrl { get; set; } = "UwU";
+        public string ApiUrl { get; set; }
     }
 }

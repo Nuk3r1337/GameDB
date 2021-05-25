@@ -2,6 +2,7 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace GameDB.Service
@@ -99,9 +100,25 @@ namespace GameDB.Service
             throw new NotImplementedException();
         }
 
-        public Task<Game> GetGame(int Id)
+        public async Task<Game> GetGame(int Id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Game game = null;
+                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "search.php/itemId=" + Id);
+                if (response.IsSuccessStatusCode)
+                {
+                    using (HttpContent content = response.Content)
+                    {
+                        game = await content.ReadFromJsonAsync<Game>();
+                    }
+                }
+                return game;
+            }
+            catch(Exception)
+            {
+                return null;
+            }
         }
 
         public Task<User> GetUser(int Id)
