@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameDB.Domain.DomainClasses;
+using GameDB.Service.Middleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,8 @@ namespace GameDB.Service.DependencyResolution
         {
             AspServiceRegistrations(services);
             services.AddHttpContextAccessor();
+
+            AuthenticationMiddleware.AddAuthentication(services, appSettings);
 
             services.AddScoped<IGameDbApiManager, GameDbApiManager>();
         }
