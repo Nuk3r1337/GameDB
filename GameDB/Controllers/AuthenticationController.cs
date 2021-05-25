@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,10 @@ namespace GameDB.Controllers
     public class AuthenticationController : Controller
     {
 
-        [HttpGet("Logon")]  
+        [HttpGet("Logon")]
         public IActionResult AuthenticationLogon()
         {
-            return Challenge(OpenIdConnectDefaults.AuthenticationScheme);
+            return Challenge(new AuthenticationProperties() { RedirectUri = "/" });
         }
     }
 }
