@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using GameDB.Service;
+using GameDB.Domain.DomainClasses;
 
 namespace GameDB.Controllers
 {
@@ -22,8 +23,28 @@ namespace GameDB.Controllers
 
         public IActionResult Index()
         {
-            var ok = _gameManager.GetGame(1);
             return View();
+        }
+
+        public async Task<IActionResult> SendAsync(string Barcode)
+        {
+            try
+            {
+                var game = await _gameManager.GetBarcode(Barcode);
+                if(game.Count() == 0)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Game", new { GameID = game[0].Id});
+                }
+                
+            }
+            catch(Exception)
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

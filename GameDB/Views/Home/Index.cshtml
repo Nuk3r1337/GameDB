@@ -17,10 +17,13 @@
         <button class="btn btn-primary" id="manualButton">Type Barcode Manually</button>
     </div>
     <div id="manualBarcode" style="display:none;">
-        <form>
-            <input type="text" name="Barcode" id="barcodeInput"/>
-            <input type="button" value="Submit" id="barcodeSubmit" class="btn btn-secondary"/>
-        </form>
+        @using (Html.BeginForm("Send", "Home", FormMethod.Post))
+        {
+            <div class="form-group">
+                <input type="text" name="Barcode" id="barcodeInput" />
+                <input type="submit" value="Submit" id="barcodeSubmit" class="btn btn-secondary" />
+            </div>
+        }
         <button class="btn btn-primary" id="autoButton">Scan Barcode Automatically</button>
     </div>
 </div>
@@ -85,10 +88,6 @@
         document.getElementById("autoButton").addEventListener("click", function () {
             document.getElementById("manualBarcode").style.display = "none";
             document.getElementById("autoBarcode").style.display = "block";
-        })
-        document.getElementById("barcodeSubmit").addEventListener("click", function () {
-            var code = document.getElementById("barcodeInput").value;
-            alert(code);
         })
     </script>
 }
