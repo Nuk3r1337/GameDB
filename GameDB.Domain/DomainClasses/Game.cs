@@ -23,6 +23,16 @@ namespace GameDB.Domain.DomainClasses
         public Game Game { get; set; }
         public int Id { get; set; }
     }
+
+    public class ExternalGameList
+    {
+        public List<ExternalGame> Items { get; set; }
+    }
+    public class ExternalGame
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+    }
     public class Publisher
     {
         public int Id { get; set; }
@@ -42,5 +52,6 @@ namespace GameDB.Domain.DomainClasses
     {
         public int Id { get; set; }
         public string Content { get; set; }
+        public string User { get; set; }
     }
 }

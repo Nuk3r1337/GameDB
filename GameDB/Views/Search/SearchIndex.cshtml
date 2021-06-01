@@ -1,0 +1,46 @@
+﻿@model List<GameDB.Domain.DomainClasses.Game>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+        <div class="row">
+            @using (Html.BeginForm("SearchIndex", "Search", FormMethod.Get))
+            {
+                <div class="form-group">
+                    <h1>Search</h1>
+                    <input type="text" name="searchInput" />
+                    <input type="submit" value="Search" />
+                </div>
+            }
+        </div>
+        <div class="row">
+            <table class="table table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <th class="col-2" scope="row">@item.Id</th>
+                        @if (item.Description == "" || item.Description == null)
+                        {
+                            <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})" style="color: red">@item.Title</a></td>
+                            <td class="col-2">Details are missing</td>
+                        }
+                        else
+                        {
+                            <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
+                            <td class="col-2">@item.Description</td>
+                        }
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+</div>

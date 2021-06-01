@@ -1,0 +1,59 @@
+﻿@model GameDB.Domain.DomainClasses.Game
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container">
+    <input type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("EditGame", "Game", new { GameID = Model.Id})'" value="Edit Game"/>
+    <h1>@Model.Title</h1>
+    <div class="row">
+        <div>
+            Pic Here Lol
+        </div>
+        <div class="container">
+            <div class="row">
+                <h5>Release Date</h5>
+                <p>@Model.Release_Date</p>
+            </div>
+            <div class="row">
+                <h5>Publisher</h5>
+                <p>@Model.Publisher</p>
+            </div>
+            <div class="row">
+                <h5>Genres</h5>
+                @if (Model.Genres != null)
+                {
+                    foreach (var genre in Model.Genres)
+                    {
+                        <p>@genre.Genre_Name</p>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <p>@Model.Description</p>
+    </div>
+    <div class="row">
+        <h5>Comments</h5>
+        @if (Model.Comments != null)
+        {
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        @comment.User
+                    </div>
+                    <div class="card-body">
+                        <p>@comment.Content</p>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No Comments</p>
+        }
+    </div>
+</div>
+
+

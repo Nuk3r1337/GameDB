@@ -15,7 +15,7 @@ namespace GameDB.Controllers
         {
             _gameManager = gameManager;
         }
-        public async Task<IActionResult> IndexAsync(string searchInput = "")
+        public async Task<IActionResult> SearchIndexAsync(string searchInput = "")
         {
             var ok = await _gameManager.SearchGame(searchInput);
 

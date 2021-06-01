@@ -13,26 +13,29 @@ namespace GameDB.Service
     public interface IGameDbApiManager
     {
         Task<List<User>> GetUser(int Id);
-        Task<Uri> CreateUser(User user);
+        Task<HttpStatusCode> CreateUser(User user);
         Task<User> UpdateUser(User user);
         Task<HttpStatusCode> DeleteUser(int Id);
-        Task<Uri> CreateGame(Game game);
+        Task<HttpStatusCode> CreateGame(Game game);
         Task<List<Game>> SearchGame(string name);
-        Task<List<Game>> GetGame(int Id);
+        Task<Game> GetGame(int Id);
         Task<Game> UpdateGame(Game game);
         Task<HttpStatusCode> DeleteGame(int Id);
         Task<List<Comment>> GetComments(int gameId);
         Task<HttpStatusCode> DeleteComment(int Id);
         Task<Comment> UpdateComment(Comment comment);
-        Task<Uri> CreateComment(Comment comment);
+        Task<HttpStatusCode> CreateComment(Comment comment);
         Task<List<Barcode>> GetBarcode(string code);
-        Task<Uri> CreateBarcode(Barcode barcode);
+        Task<HttpStatusCode> CreateBarcode(Barcode barcode);
         Task<Barcode> UpdateBarcode(Barcode barcode);
         Task<HttpStatusCode> DeleteBarcode(string code);
-        Task<Uri> CreatePublisher(Publisher publisher);
-        Task<Uri> CreateAgeRating(AgeRating ageRating);
-        Task<Uri> CreateGenre(Genre genre);
-        Task<Uri> CreateRole(Role role);
+        Task<HttpStatusCode> CreatePublisher(Publisher publisher);
+        Task<HttpStatusCode> CreateAgeRating(AgeRating ageRating);
+        Task<HttpStatusCode> CreateGenre(Genre genre);
+        Task<HttpStatusCode> CreateRole(Role role);
+        Task<List<ExternalGame>> GetExternalGame(string code);
+        
+        
     }
     public class GameDbApiManager : IGameDbApiManager
     {
@@ -53,101 +56,101 @@ namespace GameDB.Service
             return client;
         }
 
-        public async Task<Uri> CreateAgeRating(AgeRating ageRating)
+        public async Task<HttpStatusCode> CreateAgeRating(AgeRating ageRating)
         {
             try
             {
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", ageRating);
                 response.EnsureSuccessStatusCode();
-                return response.Headers.Location;
+                return response.StatusCode;
             }
             catch (Exception)
             {
-                return null;
+                return HttpStatusCode.BadRequest;
             }
         }
 
-        public async Task<Uri> CreateComment(Comment comment)
+        public async Task<HttpStatusCode> CreateComment(Comment comment)
         {
             try
             {
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", comment);
                 response.EnsureSuccessStatusCode();
-                return response.Headers.Location;
+                return response.StatusCode;
             }
             catch(Exception)
             {
-                return null;
+                return HttpStatusCode.BadRequest;
             }
         }
 
-        public async Task<Uri> CreateGame(Game game)
+        public async Task<HttpStatusCode> CreateGame(Game game)
         {
             try
             {
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", game);
                 response.EnsureSuccessStatusCode();
-                return response.Headers.Location;
+                return response.StatusCode;
             }
             catch (Exception)
             {
-                return null;
+                return HttpStatusCode.BadRequest;
             }
         }
 
-        public async Task<Uri> CreateGenre(Genre genre)
+        public async Task<HttpStatusCode> CreateGenre(Genre genre)
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", genre);
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/category", genre);
                 response.EnsureSuccessStatusCode();
-                return response.Headers.Location;
+                return response.StatusCode;
             }
             catch (Exception)
             {
-                return null;
+                return HttpStatusCode.BadRequest;
             }
         }
 
-        public async Task<Uri> CreatePublisher(Publisher publisher)
+        public async Task<HttpStatusCode> CreatePublisher(Publisher publisher)
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", publisher);
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/category", publisher);
                 response.EnsureSuccessStatusCode();
-                return response.Headers.Location;
+                return response.StatusCode;
             }
             catch (Exception)
             {
-                return null;
+                return HttpStatusCode.BadRequest;
             }
         }
 
-        public async Task<Uri> CreateRole(Role role)
+        public async Task<HttpStatusCode> CreateRole(Role role)
         {
             try
             {
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", role);
                 response.EnsureSuccessStatusCode();
-                return response.Headers.Location;
+                return response.StatusCode;
             }
             catch (Exception)
             {
-                return null;
+                return HttpStatusCode.BadRequest;
             }
         }
 
-        public async Task<Uri> CreateUser(User user)
+        public async Task<HttpStatusCode> CreateUser(User user)
         {
             try
             {
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", user);
                 response.EnsureSuccessStatusCode();
-                return response.Headers.Location;
+                return response.StatusCode;
             }
             catch (Exception)
             {
-                return null;
+                return HttpStatusCode.BadRequest;
             }
         }
 
@@ -232,7 +235,7 @@ namespace GameDB.Service
                 return null;
             }
         }
-        public async Task<List<Game>> GetGame(int Id)
+        public async Task<Game> GetGame(int Id)
         {
             try
             {
@@ -245,7 +248,7 @@ namespace GameDB.Service
                         game = await content.ReadFromJsonAsync<List<Game>>();
                     }
                 }
-                return game;
+                return game[0];
             }
             catch(Exception)
             {
@@ -295,9 +298,9 @@ namespace GameDB.Service
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PutAsJsonAsync($"edit.php/update/update/", game);
+                HttpResponseMessage response = await httpClient.PutAsJsonAsync(httpClient.BaseAddress + "update.php/update/item", game);
                 response.EnsureSuccessStatusCode();
-
+                var code = response.StatusCode;
                 game = await response.Content.ReadFromJsonAsync<Game>();
                 return game;
             }
@@ -345,17 +348,17 @@ namespace GameDB.Service
             }
         }
 
-        public async Task<Uri> CreateBarcode(Barcode barcode)
+        public async Task<HttpStatusCode> CreateBarcode(Barcode barcode)
         {
             try
             {
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", barcode);
                 response.EnsureSuccessStatusCode();
-                return response.Headers.Location;
+                return response.StatusCode;
             }
             catch (Exception)
             {
-                return null;
+                return HttpStatusCode.BadRequest;
             }
         }
 
@@ -385,6 +388,29 @@ namespace GameDB.Service
             catch (Exception)
             {
                 return HttpStatusCode.BadRequest;
+            }
+        }
+
+        public async Task<List<ExternalGame>> GetExternalGame(string code)
+        {
+            try
+            {
+                ExternalGameList externalGame = null;
+                List<ExternalGame> game = null;
+                HttpResponseMessage response = await httpClient.GetAsync("https://api.upcitemdb.com/prod/trial/lookup?upc=" + code);
+                if (response.IsSuccessStatusCode)
+                {
+                    using (HttpContent content = response.Content)
+                    {
+                        externalGame = await content.ReadFromJsonAsync<ExternalGameList>();
+                        game = externalGame.Items;
+                    }
+                }
+                return game;
+            }
+            catch(Exception)
+            {
+                return null;
             }
         }
     }

@@ -33,11 +33,13 @@ namespace GameDB.Controllers
                 var game = await _gameManager.GetBarcode(Barcode);
                 if(game.Count() == 0)
                 {
+                    var externalGame = await _gameManager.GetExternalGame(Barcode);
+                    //CreateGame(externalGame[0].Title, Barcode);
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Game", new { GameID = game[0].Id});
+                    return RedirectToAction("GameIndex", "Game", new { GameID = game[0].Id});
                 }
                 
             }
@@ -46,6 +48,14 @@ namespace GameDB.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        //private void CreateGame(string gameTitle, string barcode)
+        //{
+        //    Game game = new Game 
+        //    { 
+        //        Title = gameTitle
+        //    };
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
