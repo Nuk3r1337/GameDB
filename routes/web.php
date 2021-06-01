@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,7 +17,19 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    // create role to api guard
+    // Role::create(['guard_name' => 'api', 'name' => 'admin']);
+
+    // assign role to user
+    // auth()->user()->assignRole('admin');
+
+    // string array assigned roles to the user
+    // auth()->user()->getRoleNames();
+
+    return auth()->user()->getRoleNames();
+
+    //return view('welcome');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

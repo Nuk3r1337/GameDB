@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f55e47b55221dd97e0df7ff698a2613",
+    "content-hash": "6b691901441cdb22df4be7d5263991c5",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -170,6 +170,67 @@
                 }
             ],
             "time": "2021-01-20T22:51:39+00:00"
+        },
+        {
+            "name": "corbosman/laravel-passport-claims",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/corbosman/laravel-passport-claims.git",
+                "reference": "5a22d08cb785ee891dbebd35fdfdbb375ec91ddb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/corbosman/laravel-passport-claims/zipball/5a22d08cb785ee891dbebd35fdfdbb375ec91ddb",
+                "reference": "5a22d08cb785ee891dbebd35fdfdbb375ec91ddb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.2",
+                "laravel/passport": "^10.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.1",
+                "orchestra/testbench": "^6.5",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "CorBosman\\Passport\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CorBosman\\Passport\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cor Bosman",
+                    "email": "cor@in.ter.net"
+                }
+            ],
+            "description": "Add claims to Laravel Passport JWT Tokens",
+            "homepage": "https://github.com/corbosman/laravel-passport-claims",
+            "keywords": [
+                "claim",
+                "jwt",
+                "laravel",
+                "laravel-passport-claims",
+                "passport"
+            ],
+            "support": {
+                "issues": "https://github.com/corbosman/laravel-passport-claims/issues",
+                "source": "https://github.com/corbosman/laravel-passport-claims/tree/2.0.0"
+            },
+            "time": "2020-12-04T11:15:52+00:00"
         },
         {
             "name": "dasprid/enum",
