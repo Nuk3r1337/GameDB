@@ -27,9 +27,13 @@ Route::get('/', function () {
     // string array assigned roles to the user
     // auth()->user()->getRoleNames();
 
-    return auth()->user()->getRoleNames();
+    //return auth()->user()->getRoleNames();
 
-    //return view('welcome');
+    return view('welcome');
+});
+
+Route::get('/test', function (){
+    return ['message' => 'hello'];
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
