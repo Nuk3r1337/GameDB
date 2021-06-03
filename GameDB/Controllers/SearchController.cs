@@ -15,11 +15,22 @@ namespace GameDB.Controllers
         {
             _gameManager = gameManager;
         }
-        public async Task<IActionResult> SearchIndexAsync(string searchInput = "")
+        public async Task<IActionResult> SearchIndexAsync(string searchInput = "", string searchType = "gameTitles")
         {
-            var ok = await _gameManager.SearchGame(searchInput);
+            switch(searchType)
+            {
+                case "gameTitles":
+                    var gameTitle = await _gameManager.GetSearchResult(searchInput, "Game");
+                    ViewBag.Table = "GameTable";
+                    return View(gameTitle);
+                case "usernames":
+                    var username = await _gameManager.GetSearchResult(searchInput, "User");
+                    ViewBag.Table = "UserTable";
+                    return View(username);
 
-            return View(ok);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

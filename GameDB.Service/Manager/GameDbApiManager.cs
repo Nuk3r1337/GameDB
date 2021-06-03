@@ -12,7 +12,7 @@ namespace GameDB.Service
 {
     public interface IGameDbApiManager
     {
-        Task<List<User>> GetUser(int Id);
+        Task<User> GetUser(int Id);
         Task<HttpStatusCode> CreateUser(User user);
         Task<User> UpdateUser(User user);
         Task<HttpStatusCode> DeleteUser(int Id);
@@ -34,8 +34,8 @@ namespace GameDB.Service
         Task<HttpStatusCode> CreateGenre(Genre genre);
         Task<HttpStatusCode> CreateRole(Role role);
         Task<List<ExternalGame>> GetExternalGame(string code);
-        
-        
+
+        Task<Search> GetSearchResult(string input, string function);
     }
     public class GameDbApiManager : IGameDbApiManager
     {
@@ -88,7 +88,7 @@ namespace GameDB.Service
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", game);
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/item", game);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }
@@ -256,7 +256,7 @@ namespace GameDB.Service
             }
         }
 
-        public async Task<List<User>> GetUser(int Id)
+        public async Task<User> GetUser(int Id)
         {
             try
             {
@@ -269,7 +269,7 @@ namespace GameDB.Service
                         user = await content.ReadFromJsonAsync<List<User>>();
                     }
                 }
-                return user;
+                return user[0];
             }
             catch (Exception)
             {
@@ -352,7 +352,7 @@ namespace GameDB.Service
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", barcode);
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/code", barcode);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }
@@ -412,6 +412,51 @@ namespace GameDB.Service
             {
                 return null;
             }
+        }
+
+        public async Task<Search> GetSearchResult(string input, string function)
+        {
+            try
+            {
+                Search search = new Search();
+                switch(function)
+                {
+                    case "User":
+                        List<User> users = null;
+                        HttpResponseMessage response = await httpClient.GetAsync( httpClient.BaseAddress + "search.php/username=" + input);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            using (HttpContent content = response.Content)
+                            {
+                                users = await content.ReadFromJsonAsync<List<User>>();
+                                search.Users = users;
+                                return search;
+                            }
+                        }
+                        return null;
+
+                    case "Game":
+                        List<Game> game = null;
+                        HttpResponseMessage gameResponse = await httpClient.GetAsync(httpClient.BaseAddress + "search.php/itemName=" + input);
+                        if (gameResponse.IsSuccessStatusCode)
+                        {
+                            using (HttpContent content = gameResponse.Content)
+                            {
+                                // Byt om i guess, then fix something else
+                                game = await content.ReadFromJsonAsync<List<Game>>();
+                                search.Games = game;
+                                return search;
+                            }
+                        }
+                        return null;
+                }
+                return null;
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+
         }
     }
 }

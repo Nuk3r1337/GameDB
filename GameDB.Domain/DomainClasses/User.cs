@@ -16,11 +16,18 @@ namespace GameDB.Domain.DomainClasses
         public DateTimeOffset Date_Updated { get; set; }
         public bool Is_Deactivated { get; set; }
         public Role Role { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 
     public class Role
     {
         public int Id { get; set; }
         public string Role_Name { get; set; }
+    }
+
+    public class User_Has_Games
+    {
+        public User user { get; set; }
+        public List<Game> Games { get; set; }
     }
 }

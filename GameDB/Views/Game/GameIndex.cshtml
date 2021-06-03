@@ -7,19 +7,19 @@
     <h1>@Model.Title</h1>
     <div class="row">
         <div>
-            Pic Here Lol
+            <img src="" alt="Pic Here Lol" class="col-sm-5"/>
         </div>
-        <div class="container">
+        <div class="container col-sm-7">
             <div class="row">
-                <h5>Release Date</h5>
+                <h6>Release Date</h6>
                 <p>@Model.Release_Date</p>
             </div>
             <div class="row">
-                <h5>Publisher</h5>
+                <h6>Publisher</h6>
                 <p>@Model.Publisher</p>
             </div>
             <div class="row">
-                <h5>Genres</h5>
+                <h6>Genres</h6>
                 @if (Model.Genres != null)
                 {
                     foreach (var genre in Model.Genres)
@@ -28,13 +28,30 @@
                     }
                 }
             </div>
+            <div class="row">
+                <h6>Rating</h6>
+                @if (Model.User_Ratings != null)
+                {
+                    <p>@ViewBag.rateMath/5</p>
+                }
+                else
+                {
+                    <p>0/5</p>
+                }
+            </div>
         </div>
     </div>
     <div class="row">
+        <h3>Description</h3>
         <p>@Model.Description</p>
     </div>
     <div class="row">
         <h5>Comments</h5>
+        <div class="form-group">
+            <textarea id="commentSection" placeholder="Post Comments" class="form-control"></textarea>
+            <input type="button" value="Post Comment" id="postComment"/>
+        </div>
+        
         @if (Model.Comments != null)
         {
             @foreach (var comment in Model.Comments)
@@ -52,8 +69,26 @@
         else
         {
             <p>No Comments</p>
-        }
+            }
     </div>
 </div>
-
+@section Scripts
+{
+    <script>
+        document.getElementById("postComment").addEventListener("click", function () {
+            console.log(document.getElementById("commentSection").value);
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("PostComment", "Game")',
+                data: { comment: document.getElementById("commentSection").value },
+                success: function (out) {
+                    if (out)
+                    {
+                        location.reload();
+                    }
+                }
+            });
+        })
+    </script>
+}
 

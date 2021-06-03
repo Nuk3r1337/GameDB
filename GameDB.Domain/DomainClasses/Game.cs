@@ -16,6 +16,12 @@ namespace GameDB.Domain.DomainClasses
         public Publisher Publisher { get; set; }
         public AgeRating AgeRating { get; set; }
         public List<Comment> Comments { get; set; }
+        public List<User_Rating> User_Ratings { get; set; }
+    }
+    public class User_Rating
+    {
+        public int Id { get; set; }
+        public int Rating { get; set; }
     }
     public class Barcode
     {
@@ -53,5 +59,6 @@ namespace GameDB.Domain.DomainClasses
         public int Id { get; set; }
         public string Content { get; set; }
         public string User { get; set; }
+        public int Game { get; set; }
     }
 }

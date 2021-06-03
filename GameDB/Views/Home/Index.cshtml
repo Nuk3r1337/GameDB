@@ -3,28 +3,32 @@
 }
 
 <div class="container">
+    <div id="manualBarcode" style="display:none;">
+        <button class="btn btn-primary row" id="autoButton">Scan Barcode Automatically</button>
+        @using (Html.BeginForm("Send", "Home", FormMethod.Post))
+        {
+            <div class="form-group row">
+                <div class="container">
+                    <div class="row">
+                        <input type="text" name="Barcode" id="barcodeInput" />
+                    </div>
+                    <div class="row">
+                        <input type="submit" value="Submit" id="barcodeSubmit" class="btn btn-secondary" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
     <div id="autoBarcode">
+        <button class="btn btn-primary" id="manualButton">Type Barcode Manually</button>
         <h1 class="d-flex justify-content-around row">Scan Here</h1>
         <div class="d-flex justify-content-around row">
             <video id="video" class="col-sm-8" style="border: 1px solid gray"></video>
         </div>
-        <div class="d-flex justify-content-around ">
-            <button class="btn btn-success col-sm-4" id="startButton">Start Scan</button>
-            <button class="btn btn-danger col-sm-4" id="resetButton">Stop Scan</button>
+        <div class="d-flex justify-content-around row">
+            <button class="btn btn-success col-sm-2" id="startButton">Start Scan</button>
+            <button class="btn btn-danger col-sm-2" id="resetButton">Stop Scan</button>
         </div>
-        <label>Result:</label>
-        <pre><code id="scanResult"></code></pre>
-        <button class="btn btn-primary" id="manualButton">Type Barcode Manually</button>
-    </div>
-    <div id="manualBarcode" style="display:none;">
-        @using (Html.BeginForm("Send", "Home", FormMethod.Post))
-        {
-            <div class="form-group">
-                <input type="text" name="Barcode" id="barcodeInput" />
-                <input type="submit" value="Submit" id="barcodeSubmit" class="btn btn-secondary" />
-            </div>
-        }
-        <button class="btn btn-primary" id="autoButton">Scan Barcode Automatically</button>
     </div>
 </div>
 
@@ -64,12 +68,10 @@
                             document.getElementById("barcodeSubmit").click();
                         }).catch((err) => {
                             console.error(err)
-                            document.getElementById('scanResult').textContent = err
                         })
                         console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
                     })
                     document.getElementById('resetButton').addEventListener('click', () => {
-                        document.getElementById('scanResult').textContent = '';
                         codeReader.reset();
                         console.log('Reset.')
                     })

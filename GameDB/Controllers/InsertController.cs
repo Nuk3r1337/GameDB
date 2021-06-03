@@ -25,7 +25,6 @@ namespace GameDB.Controllers
         {
             try
             {
-                //Publisher publisher = new Publisher { Name = pubName };
                 var url = await _gameManager.CreatePublisher(publisher);
                 if(url == HttpStatusCode.Created)
                 {
