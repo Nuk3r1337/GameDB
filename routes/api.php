@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Game;
+use App\Models\Barcode;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,8 @@ use App\Models\Game;
 |
 */
 Route::resource('games', 'App\Http\Controllers\GameController');
+
+Route::resource('barcode', 'App\Http\Controllers\BarcodeController');
 
 Route::get('/test', function (){
     return ['message' => 'hello'];

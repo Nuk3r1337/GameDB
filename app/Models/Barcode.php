@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Barcode extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'code',
+        'games_id'
+    ];
+
+    protected $casts = [
+        'games_id' => 'integer'
+    ];
 }
