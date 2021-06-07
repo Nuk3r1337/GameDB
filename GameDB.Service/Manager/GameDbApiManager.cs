@@ -89,7 +89,7 @@ namespace GameDB.Service
             try
             {
                 Game newgame = null;
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "games", game);
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/games", game);
                 if(response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -227,7 +227,7 @@ namespace GameDB.Service
             try
             {
                 List<Game> game = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "games/" + name);
+                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/games/" + name);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -247,7 +247,7 @@ namespace GameDB.Service
             try
             {
                 Game game = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "games/" + Id);
+                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/games/" + Id);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -305,7 +305,7 @@ namespace GameDB.Service
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PutAsJsonAsync(httpClient.BaseAddress + "games/", game);
+                HttpResponseMessage response = await httpClient.PutAsJsonAsync(httpClient.BaseAddress + "/api/games/", game);
                 response.EnsureSuccessStatusCode();
                 var code = response.StatusCode;
                 game = await response.Content.ReadFromJsonAsync<Game>();
@@ -338,7 +338,7 @@ namespace GameDB.Service
             try
             {
                 Barcode barcode = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "barcode/" + code);
+                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/barcode/" + code);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -359,7 +359,7 @@ namespace GameDB.Service
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "barcode", barcode);
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/barcode", barcode);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }
@@ -444,7 +444,7 @@ namespace GameDB.Service
 
                     case "Game":
                         List<Game> game = null;
-                        HttpResponseMessage gameResponse = await httpClient.GetAsync(httpClient.BaseAddress + "games/" + input);
+                        HttpResponseMessage gameResponse = await httpClient.GetAsync(httpClient.BaseAddress + "/api/games/" + input);
                         if (gameResponse.IsSuccessStatusCode)
                         {
                             using (HttpContent content = gameResponse.Content)

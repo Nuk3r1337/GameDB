@@ -20,14 +20,14 @@ namespace GameDB.Controllers
         public async Task<IActionResult> GameIndexAsync(int GameID)
         {
             var game = await gameManager.GetGame(GameID);
-            if(game.User_ratings != null)
+            if(game.User_Ratings != null)
             {
                 int rating = 0;
-                foreach(var rate in game.User_ratings)
+                foreach(var rate in game.User_Ratings)
                 {
                     rating += rate.Rating;
                 }
-                ViewBag.rateMath = rating / game.User_ratings.Count();
+                ViewBag.rateMath = rating / game.User_Ratings.Count();
             }
             gameID = game.Id;
             return View(game);
