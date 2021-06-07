@@ -16,7 +16,7 @@ namespace GameDB.Service
         Task<HttpStatusCode> CreateUser(User user);
         Task<User> UpdateUser(User user);
         Task<HttpStatusCode> DeleteUser(int Id);
-        Task<HttpStatusCode> CreateGame(Game game);
+        Task<Game> CreateGame(Game game);
         Task<List<Game>> SearchGame(string name);
         Task<Game> GetGame(int Id);
         Task<Game> UpdateGame(Game game);
@@ -25,8 +25,8 @@ namespace GameDB.Service
         Task<HttpStatusCode> DeleteComment(int Id);
         Task<Comment> UpdateComment(Comment comment);
         Task<HttpStatusCode> CreateComment(Comment comment);
-        Task<List<Barcode>> GetBarcode(string code);
-        Task<HttpStatusCode> CreateBarcode(Barcode barcode);
+        Task<Barcode> GetBarcode(string code);
+        Task<HttpStatusCode> CreateBarcode(InsertBarcode barcode);
         Task<Barcode> UpdateBarcode(Barcode barcode);
         Task<HttpStatusCode> DeleteBarcode(string code);
         Task<HttpStatusCode> CreatePublisher(Publisher publisher);
@@ -84,17 +84,24 @@ namespace GameDB.Service
             }
         }
 
-        public async Task<HttpStatusCode> CreateGame(Game game)
+        public async Task<Game> CreateGame(Game game)
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/item", game);
-                response.EnsureSuccessStatusCode();
-                return response.StatusCode;
+                Game newgame = null;
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "games", game);
+                if(response.IsSuccessStatusCode)
+                {
+                    using (HttpContent content = response.Content)
+                    {
+                        newgame = await content.ReadFromJsonAsync<Game>();
+                    }
+                }
+                return newgame;
             }
             catch (Exception)
             {
-                return HttpStatusCode.BadRequest;
+                return null;
             }
         }
 
@@ -220,7 +227,7 @@ namespace GameDB.Service
             try
             {
                 List<Game> game = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "search.php/itemName=" + name);
+                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "games/" + name);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -239,16 +246,16 @@ namespace GameDB.Service
         {
             try
             {
-                List<Game> game = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "search.php/itemId=" + Id);
+                Game game = null;
+                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "games/" + Id);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
                     {
-                        game = await content.ReadFromJsonAsync<List<Game>>();
+                        game = await content.ReadFromJsonAsync<Game>();
                     }
                 }
-                return game[0];
+                return game;
             }
             catch(Exception)
             {
@@ -298,7 +305,7 @@ namespace GameDB.Service
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PutAsJsonAsync(httpClient.BaseAddress + "update.php/update/item", game);
+                HttpResponseMessage response = await httpClient.PutAsJsonAsync(httpClient.BaseAddress + "games/", game);
                 response.EnsureSuccessStatusCode();
                 var code = response.StatusCode;
                 game = await response.Content.ReadFromJsonAsync<Game>();
@@ -326,17 +333,17 @@ namespace GameDB.Service
             }
         }
 
-        public async Task<List<Barcode>> GetBarcode(string code)
+        public async Task<Barcode> GetBarcode(string code)
         {
             try
             {
-                List<Barcode> barcode = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "search.php/code=" + code);
+                Barcode barcode = null;
+                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "barcode/" + code);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
                     {
-                        barcode = await content.ReadFromJsonAsync<List<Barcode>>();
+                        barcode = await content.ReadFromJsonAsync<Barcode>();
                         
                     }
                 }
@@ -348,11 +355,11 @@ namespace GameDB.Service
             }
         }
 
-        public async Task<HttpStatusCode> CreateBarcode(Barcode barcode)
+        public async Task<HttpStatusCode> CreateBarcode(InsertBarcode barcode)
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/code", barcode);
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "barcode", barcode);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }
@@ -437,7 +444,7 @@ namespace GameDB.Service
 
                     case "Game":
                         List<Game> game = null;
-                        HttpResponseMessage gameResponse = await httpClient.GetAsync(httpClient.BaseAddress + "search.php/itemName=" + input);
+                        HttpResponseMessage gameResponse = await httpClient.GetAsync(httpClient.BaseAddress + "games/" + input);
                         if (gameResponse.IsSuccessStatusCode)
                         {
                             using (HttpContent content = gameResponse.Content)

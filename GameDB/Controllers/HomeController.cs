@@ -33,24 +33,26 @@ namespace GameDB.Controllers
             {
                 //Check if barcode exists
                 var game = await _gameManager.GetBarcode(Barcode);
-                if(game.Count() == 0)
+                if(game == null)
                 {
                     //Barcode does not exist, get game data from another API
                     var externalGame = await _gameManager.GetExternalGame(Barcode);
 
                     //Get the informations and create an entry
-                    Game gameObj = new Game { Title = externalGame.FirstOrDefault().Title };
+                    Game gameObj = new Game
+                    {
+                        Title = externalGame.FirstOrDefault().Title
+                    };
                     var newGame = await _gameManager.CreateGame(gameObj);
 
-                    if(newGame == HttpStatusCode.Created)
+                    if(newGame != null)
                     {
-                        //Create a barcode entry for the new entry
-                        var searchGame = await _gameManager.SearchGame(externalGame.FirstOrDefault().Title);
-                        Barcode createBarcode = new Barcode { Code = Barcode, Game = new Game { Id = searchGame.FirstOrDefault().Id } };
+                        //Create a barcode entry for the new game entry
+                        InsertBarcode createBarcode = new InsertBarcode { Code = Barcode, Games_id = newGame.Id };
                         var newBarcode = await _gameManager.CreateBarcode(createBarcode);
                         if(newBarcode == HttpStatusCode.Created)
                         {
-                            return RedirectToAction("GameIndex", "Game", new { GameID = searchGame.FirstOrDefault().Id });
+                            return RedirectToAction("GameIndex", "Game", new { GameID = newGame.Id });
                         }
                         else
                         {
@@ -64,7 +66,7 @@ namespace GameDB.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("GameIndex", "Game", new { GameID = game[0].Id});
+                    return RedirectToAction("GameIndex", "Game", new { GameID = game.Games_id.Id});
                 }
                 
             }
@@ -73,14 +75,6 @@ namespace GameDB.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-        //private void CreateGame(string gameTitle, string barcode)
-        //{
-        //    Game game = new Game 
-        //    { 
-        //        Title = gameTitle
-        //    };
-        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

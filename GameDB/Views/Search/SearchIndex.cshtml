@@ -37,7 +37,7 @@
                         {
                             <tr>
                                 <th class="col-2" scope="row">@item.Id</th>
-                                @if (item.Description == "" || item.Description == null)
+                                @if (item.Description == "" || item.Description == null || item.Description == "No Description")
                                 {
                                     <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})" style="color: red">@item.Title</a></td>
                                     <td class="col-2">Details are missing</td>

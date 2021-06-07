@@ -11,12 +11,13 @@ namespace GameDB.Domain.DomainClasses
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTimeOffset? Release_Date { get; set; }
+        public DateTimeOffset? Release_date { get; set; }
         public List<Genre> Genres { get; set; }
-        public Publisher Publisher { get; set; }
-        public AgeRating AgeRating { get; set; }
+        public Publisher Publishers_id { get; set; }
+        public AgeRating Rating_id { get; set; }
+        public string Picture { get; set; }
         public List<Comment> Comments { get; set; }
-        public List<User_Rating> User_Ratings { get; set; }
+        public List<User_Rating> User_ratings { get; set; }
     }
     public class User_Rating
     {
@@ -26,10 +27,13 @@ namespace GameDB.Domain.DomainClasses
     public class Barcode
     {
         public string Code { get; set; }
-        public Game Game { get; set; }
-        public int Id { get; set; }
+        public Game Games_id { get; set; }
     }
-
+    public class InsertBarcode
+    {
+        public string Code { get; set; }
+        public int Games_id { get; set; }
+    }
     public class ExternalGameList
     {
         public List<ExternalGame> Items { get; set; }
