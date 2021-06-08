@@ -15,7 +15,7 @@ class GameController extends Controller
     public function index()
     {
         //return Game::all();
-        //, 'ageRating'
+        //, 'ageRating' testing
         return Game::with('publisher', 'ageRating','comments')->get();
     }
 
