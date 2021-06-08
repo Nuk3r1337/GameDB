@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class User_rating extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'rating',
+        'games_rating',
+        'users_id'
+    ];
 }

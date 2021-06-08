@@ -7,5 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'comments',
+        'games_id',
+        'users_id'
+    ];
+
+    public function game(){
+        return $this->belongsTo(Game::class,'id','games_id');
+    }
 }

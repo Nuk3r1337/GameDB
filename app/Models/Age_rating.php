@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Age_rating extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'age_rating',
+    ];
+
+    public function game(){
+        return $this->HasMany(Game::class);
+    }
 }

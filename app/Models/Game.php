@@ -21,4 +21,16 @@ class Game extends Model
         'publishers_id' => 'integer',
         'rating_id' => 'integer'
     ];
+
+    public function publisher(){
+        return $this->belongsTo(Publisher::class, 'publishers_id','id');
+    }
+
+    public function ageRating(){
+        return $this->belongsTo(Age_rating::class, 'age_ratings_id','id');
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class, 'games_id','id');
+    }
 }

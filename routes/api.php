@@ -16,7 +16,7 @@ use App\Models\Barcode;
 |
 */
 Route::resource('games', 'App\Http\Controllers\GameController');
-
+Route::resource('comments', 'App\Http\Controllers\CommentController');
 Route::resource('barcode', 'App\Http\Controllers\BarcodeController');
 
 Route::get('/test', function (){

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
-use App\Models\Game;
 
-class GameController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,7 @@ class GameController extends Controller
      */
     public function index()
     {
-        //return Game::all();
-        //, 'ageRating'
-        return Game::with('publisher', 'ageRating','comments')->get();
+        return Comment::all();
     }
 
     /**
@@ -27,7 +25,7 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        return Game::create($request->all());
+        return Comment::create($request->all());
     }
 
     /**
@@ -38,7 +36,7 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        return Game::find($id);
+        return Comment::find($id);
     }
 
     /**
@@ -50,7 +48,7 @@ class GameController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return Game::find($id)->update($request->all());
+        return Comment::find($id)->update($request->all());
     }
 
     /**
@@ -61,6 +59,6 @@ class GameController extends Controller
      */
     public function destroy($id)
     {
-        return Game::destroy($id);
+        return Comment::destroy($id);
     }
 }

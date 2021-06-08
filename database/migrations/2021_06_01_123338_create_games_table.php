@@ -19,7 +19,7 @@ class CreateGamesTable extends Migration
             $table->date("release_date")->nullable();
             $table->string("description")->nullable();
             $table->foreignId("publishers_id")->default('1');
-            $table->foreignId("rating_id")->default('1');
+            $table->foreignId("age_ratings_id")->default('1');
             $table->string("picture")->nullable();
             $table->timestamps();
         });
