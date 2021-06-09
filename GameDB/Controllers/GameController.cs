@@ -38,7 +38,7 @@ namespace GameDB.Controllers
             var game = await gameManager.GetGame(GameID);
             return View(game);
         }
-        
+   
         [HttpPost]
         public async Task<IActionResult> EditGame(Game game)
         {

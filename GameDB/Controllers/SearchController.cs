@@ -27,7 +27,18 @@ namespace GameDB.Controllers
                     var username = await _gameManager.GetSearchResult(searchInput, "User");
                     ViewBag.Table = "UserTable";
                     return View(username);
-
+                case "gamePublishers":
+                    var publishers = await _gameManager.GetSearchResult(searchInput, "Publishers");
+                    ViewBag.Table = "PubTable";
+                    return View(publishers);
+                case "ageRating":
+                    var ageRating = await _gameManager.GetSearchResult(searchInput, "AgeRatings");
+                    ViewBag.Table = "Ages";
+                    return View(ageRating);
+                case "releaseDate":
+                    var release = await _gameManager.GetSearchResult(searchInput, "ReleaseDate");
+                    ViewBag.Table = "Release";
+                    return View(release);
             }
 
             return RedirectToAction("Index", "Home");

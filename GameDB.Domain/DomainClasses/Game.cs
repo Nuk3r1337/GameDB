@@ -14,7 +14,8 @@ namespace GameDB.Domain.DomainClasses
         public DateTimeOffset? Release_Date { get; set; }
         public List<Genre> Genres { get; set; }
         public Publisher Publisher { get; set; }
-        public AgeRating AgeRating { get; set; }
+        public AgeRating Age_Rating { get; set; }
+        public string Picture { get; set; }
         public List<Comment> Comments { get; set; }
         public List<User_Rating> User_Ratings { get; set; }
     }
@@ -26,10 +27,13 @@ namespace GameDB.Domain.DomainClasses
     public class Barcode
     {
         public string Code { get; set; }
-        public Game Game { get; set; }
-        public int Id { get; set; }
+        public Game Games_id { get; set; }
     }
-
+    public class InsertBarcode
+    {
+        public string Code { get; set; }
+        public int Games_id { get; set; }
+    }
     public class ExternalGameList
     {
         public List<ExternalGame> Items { get; set; }
