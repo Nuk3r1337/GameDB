@@ -13,7 +13,7 @@ class CreateGamesHasGenreTable extends Migration
      */
     public function up()
     {
-        Schema::create('games_has_genre', function (Blueprint $table) {
+        Schema::create('games_has_genres', function (Blueprint $table) {
             $table->id();
             $table->foreignId("games_id");
             $table->foreignId("genre_id");
@@ -28,6 +28,6 @@ class CreateGamesHasGenreTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('games_has_genre');
+        Schema::dropIfExists('games_has_genres');
     }
 }
