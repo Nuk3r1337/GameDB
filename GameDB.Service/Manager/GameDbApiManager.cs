@@ -1,6 +1,7 @@
 ﻿using GameDB.Domain.DomainClasses;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -246,16 +247,16 @@ namespace GameDB.Service
         {
             try
             {
-                Game game = null;
+                List<Game> game = null;
                 HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/games/" + Id);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
                     {
-                        game = await content.ReadFromJsonAsync<Game>();
+                        game = await content.ReadFromJsonAsync<List<Game>>();
                     }
                 }
-                return game;
+                return game.FirstOrDefault();
             }
             catch(Exception)
             {

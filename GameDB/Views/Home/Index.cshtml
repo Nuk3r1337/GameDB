@@ -23,65 +23,142 @@
         <button class="btn btn-primary" id="manualButton">Type Barcode Manually</button>
         <h1 class="d-flex justify-content-around row">Scan Here</h1>
         <div class="d-flex justify-content-around row">
-            <video id="video" class="col-sm-8" style="border: 1px solid gray"></video>
+            <video autoplay="true" id="videoElement" capture="enviroment" class="col-sm-8" style="border: 1px solid gray"></video>
         </div>
         <div class="d-flex justify-content-around row">
-            <button class="btn btn-success col-sm-2" id="startButton">Start Scan</button>
-            <button class="btn btn-danger col-sm-2" id="resetButton">Stop Scan</button>
+            <button class="btn btn-success col-sm-2" id="start">Start Scan</button>
+            <button class="btn btn-danger col-sm-2" id="stop">Stop Scan</button>
+            <canvas style="display: none;" id="canvas" width="475" height="475"></canvas>
         </div>
     </div>
 </div>
 
 @section Scripts
 {
-    <script type="text/javascript" src="https://unpkg.com/@@zxing/library@0.18.6/umd/index.min.js"></script>
-    <script type="text/javascript">
-        window.addEventListener('load', function () {
-            let selectedDeviceId;
-            const codeReader = new ZXing.BrowserBarcodeReader()
-            console.log('ZXing code reader initialized')
-            codeReader.getVideoInputDevices()
-                .then((videoInputDevices) => {
-                    const sourceSelect = document.getElementById('sourceSelect')
-                    selectedDeviceId = videoInputDevices[0].deviceId
-                    if (videoInputDevices.length > 1) {
-                        videoInputDevices.forEach((element) => {
-                            const sourceOption = document.createElement('option')
-                            sourceOption.text = element.label
-                            sourceOption.value = element.deviceId
-                            sourceSelect.appendChild(sourceOption)
-                        })
+    @*<script type="text/javascript" src="https://unpkg.com/@@zxing/library@0.18.6/umd/index.min.js"></script>*@
+<script>
+    var startVideo = document.querySelector("#start");
+    var video = document.querySelector("#videoElement");
+    var stopVideo = document.querySelector("#stop");
+    var vid = document.getElementById("videoElement");
+    var type = getUserType();
 
-                        sourceSelect.onchange = () => {
-                            selectedDeviceId = sourceSelect.value;
-                        }
-
-                        const sourceSelectPanel = document.getElementById('sourceSelectPanel')
-                        sourceSelectPanel.style.display = 'block'
-                    }
-
-                    document.getElementById('startButton').addEventListener('click', () => {
-                        codeReader.decodeOnceFromVideoDevice(selectedDeviceId, 'video').then((result) => {
-                            console.log(result)
-                            document.getElementById('scanResult').textContent = result.text;
-                            document.getElementById("barcodeInput").value = result.text;
-                            document.getElementById("barcodeSubmit").click();
-                        }).catch((err) => {
-                            console.error(err)
-                        })
-                        console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+    document.getElementById("start").addEventListener("click", function () {
+        if (navigator.mediaDevices.getUserMedia) {
+            if (type == "mobile") {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: "environment" } }, audio: false })
+                    .then(function (stream) {
+                        video.srcObject = stream;
+                        loop(true);
                     })
-                    document.getElementById('resetButton').addEventListener('click', () => {
-                        codeReader.reset();
-                        console.log('Reset.')
+                    .catch(function (err0r) {
+                        console.log("Something went wrong!");
+                    });
+            } else {
+                navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+                    .then(function (stream) {
+                        video.srcObject = stream;
+                        loop(true);
                     })
+                    .catch(function (err0r) {
+                        console.log("Something went wrong!");
+                    });
+            }
+        }
+    })
 
-                })
-                .catch((err) => {
-                    console.error(err)
-                })
-        })
-    </script>
+    stopVideo.addEventListener("click", stop, false);
+
+
+    function stop(e) {
+        var stream = video.srcObject;
+        var tracks = stream.getTracks();
+
+        for (var i = 0; i < tracks.length; i++) {
+            var track = tracks[i];
+            track.stop();
+        }
+
+        video.srcObject = null;
+        loop(false);
+    }
+
+    function loop(bool) {
+        if (bool) {
+            timeout = setTimeout(function () {
+                capture();
+                save();
+                loop(true);
+            }, 250)
+        } else {
+            clearTimeout(timeout)
+        }
+    }
+
+    function save() {
+        // Below new canvas to generate flip/mirron image from existing canvas
+        var destinationCanvas = document.createElement("canvas");
+        var destCtx = destinationCanvas.getContext('2d');
+
+
+
+        destinationCanvas.height = 475;
+        destinationCanvas.width = 475;
+
+        destCtx.translate(video.videoWidth, 0);
+
+
+        destCtx.scale(-1, 1);
+
+        destCtx.drawImage(document.getElementById("canvas"), 0, 0);
+        //destCtx.rotate(180 * Math.PI / 180);
+
+        //document.getElementById("canvas").style.transform = scaleX(-1);
+
+        // Get base64 data to send to server for upload
+        var imagebase64data = destinationCanvas.toDataURL("image/png");
+        imagebase64data = imagebase64data.replace('data:image/png;base64,', '');
+
+        $.ajax({
+            type: 'POST',
+            url: '/Home/scanCamPic',
+            data: { imageData: imagebase64data },
+            success: function (out) {
+                if (out != "fail") {
+                    loop(false);
+                    document.getElementById("hiddenInput").value = out;
+                    document.getElementById("sendForm").click();
+                }
+                console.log(out);
+            }
+        });
+    }
+
+    function capture() {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+
+        // Capture the image into canvas from Webcam streaming Video element
+        context.drawImage(video, 0, 0);
+    }
+
+
+    function getUserType() {
+        const ua = navigator.userAgent;
+        if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+            return "tablet";
+        }
+        if (
+            /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+                ua
+            )
+        ) {
+            return "mobile";
+        }
+        return "desktop";
+    }
+
+</script>
     <script>
         document.getElementById("manualButton").addEventListener("click", function () {
             document.getElementById("manualBarcode").style.display = "block";

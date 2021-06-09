@@ -12,7 +12,7 @@
         <div class="container col-sm-7">
             <div class="row">
                 <h6>Release Date</h6>
-                <p>@Model.Release_Date</p>
+                <p>@Model.Release_date</p>
             </div>
             <div class="row">
                 <h6>Publisher</h6>
@@ -20,9 +20,9 @@
             </div>
             <div class="row">
                 <h6>Genres</h6>
-                @if (Model.Genres != null)
+                @if (Model.Game_Genre != null)
                 {
-                    foreach (var genre in Model.Genres)
+                    foreach (var genre in Model.Game_Genre)
                     {
                         <p>@genre.Genre_Name</p>
                     }

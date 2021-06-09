@@ -11,10 +11,10 @@ namespace GameDB.Domain.DomainClasses
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTimeOffset? Release_Date { get; set; }
-        public List<Genre> Genres { get; set; }
+        public DateTimeOffset? Release_date { get; set; }
+        public List<Genre> Game_Genre { get; set; }
         public Publisher Publisher { get; set; }
-        public AgeRating Age_Rating { get; set; }
+        public AgeRating Age_rating { get; set; }
         public string Picture { get; set; }
         public List<Comment> Comments { get; set; }
         public List<User_Rating> User_Ratings { get; set; }
@@ -51,7 +51,7 @@ namespace GameDB.Domain.DomainClasses
     public class AgeRating
     {
         public int Id { get; set; }
-        public string Age_Rating { get; set; }
+        public string Age_rating { get; set; }
     }
     public class Genre
     {
