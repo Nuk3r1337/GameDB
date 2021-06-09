@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Publisher;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +14,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            PublisherSeeder::class,
+            AgeRatingSeeder::class
+        ]);
         // \App\Models\User::factory(10)->create();
     }
 }

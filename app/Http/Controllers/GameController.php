@@ -37,7 +37,7 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        return Game::find($id)->with('publisher', 'ageRating','comments','gameGenre')->get();
+        return Game::with('publisher', 'ageRating','comments','gameGenre')->find($id);
     }
 
     /**
