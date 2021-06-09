@@ -15,8 +15,7 @@ class GameController extends Controller
     public function index()
     {
         //return Game::all();
-        //, 'ageRating' testing
-        return Game::with('publisher', 'ageRating','comments')->get();
+        return Game::with('publisher', 'ageRating','comments','gameGenre')->get();
     }
 
     /**
@@ -38,7 +37,7 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        return Game::find($id);
+        return Game::find($id)->with('publisher', 'ageRating','comments','gameGenre')->get();
     }
 
     /**

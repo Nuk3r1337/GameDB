@@ -33,4 +33,8 @@ class Game extends Model
     public function comments(){
         return $this->hasMany(Comment::class, 'games_id','id');
     }
+
+    public function gameGenre(){
+        return $this->hasMany(Games_has_genre::class, 'games_id','id');
+    }
 }

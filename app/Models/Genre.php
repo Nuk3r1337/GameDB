@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Genre extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'name'
+    ];
+
+    public function genreGame(){
+        return $this->hasMany(Games_has_genre::class, 'genre_id', 'id');
+    }
 }
