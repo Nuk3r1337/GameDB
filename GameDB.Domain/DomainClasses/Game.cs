@@ -13,8 +13,8 @@ namespace GameDB.Domain.DomainClasses
         public string Description { get; set; }
         public DateTimeOffset? Release_Date { get; set; }
         public List<Genre> Genres { get; set; }
-        public Publisher Publishers_Id { get; set; }
-        public AgeRating Rating_Id { get; set; }
+        public Publisher Publisher { get; set; }
+        public AgeRating Age_Rating { get; set; }
         public string Picture { get; set; }
         public List<Comment> Comments { get; set; }
         public List<User_Rating> User_Ratings { get; set; }

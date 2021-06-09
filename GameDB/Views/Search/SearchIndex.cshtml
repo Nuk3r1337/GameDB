@@ -22,19 +22,69 @@
             }
         </div>
         <div class="row">
-            @if (ViewBag.Table == "GameTable")
+            @switch (ViewBag.Table)
             {
-                <table class="table table-striped">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Games)
-                        {
+                case "GameTable":
+                    <table class="table table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Games)
+                            {
+                                <tr>
+                                    <th class="col-2" scope="row">@item.Id</th>
+                                    @if (item.Description == "" || item.Description == null || item.Description == "No Description")
+                                    {
+                                        <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})" style="color: red">@item.Title</a></td>
+                                        <td class="col-2">Details are missing</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
+                                        <td class="col-2">@item.Description</td>
+                                    }
+                                    <td class="col-2"><button class="btn btn-secondary">Add to game list</button></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    break;
+                case "UserTable":
+                    <table class="table table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Username</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.Users)
+                            {
+                                <tr>
+                                    <th class="col-2" scope="row">@user.Id</th>
+                                    <td class="col-2"><a href="@Url.Action("UserIndex", "User", new { UserID = user.Id})">@user.Username</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    break;
+                case "PubTable":
+                    <table class="table table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Games)
+                            {
                             <tr>
                                 <th class="col-2" scope="row">@item.Id</th>
                                 @if (item.Description == "" || item.Description == null || item.Description == "No Description")
@@ -46,31 +96,73 @@
                                 {
                                     <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
                                     <td class="col-2">@item.Description</td>
+                                    <td class="col-2">@item.Publisher.Name</td>
                                 }
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else if (ViewBag.Table == "UserTable")
-            {
-                <table class="table table-striped">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Username</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var user in Model.Users)
-                        {
+                            }
+                        </tbody>
+                    </table>
+                    break;
+                case "Ages":
+                    <table class="table table-striped">
+                        <thead class="thead-light">
                             <tr>
-                                <th class="col-2" scope="row">@user.Id</th>
-                                <td class="col-2"><a href="@Url.Action("UserIndex", "User", new { UserID = user.Id})">@user.Username</a></td>
+                                <th scope="col">ID</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Games)
+                            {
+                                <tr>
+                                    <th class="col-2" scope="row">@item.Id</th>
+                                    @if (item.Description == "" || item.Description == null || item.Description == "No Description")
+                                    {
+                                        <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})" style="color: red">@item.Title</a></td>
+                                        <td class="col-2">Details are missing</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
+                                        <td class="col-2">@item.Description</td>
+                                        <td class="col-2">@item.Age_Rating.Age_Rating</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    break;
+                case "Release":
+                    <table class="table table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Games)
+                            {
+                            <tr>
+                                <th class="col-2" scope="row">@item.Id</th>
+                                @if (item.Description == "" || item.Description == null || item.Description == "No Description")
+                                {
+                                    <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})" style="color: red">@item.Title</a></td>
+                                    <td class="col-2">Details are missing</td>
+                                }
+                                else
+                                {
+                                    <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
+                                    <td class="col-2">@item.Description</td>
+                                    <td class="col-2">@item.Release_Date</td>
+                                }
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                    break;
             }
         </div>
 </div>

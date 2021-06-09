@@ -268,7 +268,7 @@ namespace GameDB.Service
             try
             {
                 List<User> user = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "search.php/userId=" + Id);
+                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/users/" + Id);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -373,7 +373,7 @@ namespace GameDB.Service
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PutAsJsonAsync($"edit.php/update/update/", barcode);
+                HttpResponseMessage response = await httpClient.PutAsJsonAsync(httpClient.BaseAddress + "/api/barcode", barcode);
                 response.EnsureSuccessStatusCode();
 
                 barcode = await response.Content.ReadFromJsonAsync<Barcode>();
@@ -430,7 +430,7 @@ namespace GameDB.Service
                 {
                     case "User":
                         List<User> users = null;
-                        HttpResponseMessage response = await httpClient.GetAsync( httpClient.BaseAddress + "search.php/username=" + input);
+                        HttpResponseMessage response = await httpClient.GetAsync( httpClient.BaseAddress + "/api/users/" + input);
                         if (response.IsSuccessStatusCode)
                         {
                             using (HttpContent content = response.Content)
@@ -449,7 +449,6 @@ namespace GameDB.Service
                         {
                             using (HttpContent content = gameResponse.Content)
                             {
-                                // Byt om i guess, then fix something else
                                 game = await content.ReadFromJsonAsync<List<Game>>();
                                 search.Games = game;
                                 return search;
