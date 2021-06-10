@@ -64,7 +64,7 @@ namespace GameDB.Controllers
         {
             try
             {
-                Comment insert = new Comment { Content = comment, Game = gameID };
+                Comment insert = new Comment { Comments = comment, Game = gameID };
                 var api = await gameManager.CreateComment(insert);
                 if(api == HttpStatusCode.Created)
                 {

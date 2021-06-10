@@ -43,5 +43,20 @@ namespace GameDB.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        
+        [HttpPost]
+        public async Task<bool> AddToGameList(int gameId)
+        {
+            Insert_User_Games insert = new Insert_User_Games { Users_id = 1, Games_id = gameId };
+            var statusCode = await _gameManager.CreateUserGames(insert);
+            if(statusCode == System.Net.HttpStatusCode.Created)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

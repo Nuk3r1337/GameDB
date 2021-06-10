@@ -20,11 +20,11 @@
             </div>
             <div class="row">
                 <h6>Genres</h6>
-                @if (Model.Game_Genre != null)
+                @if (Model.Game_genre != null)
                 {
-                    foreach (var genre in Model.Game_Genre)
+                    foreach (var genre in Model.Game_genre)
                     {
-                        <p>@genre.Genre_Name</p>
+                        <p>@genre.Name</p>
                     }
                 }
             </div>
@@ -32,11 +32,28 @@
                 <h6>Rating</h6>
                 @if (Model.User_Ratings != null)
                 {
-                    <p>@ViewBag.rateMath/5</p>
+                    <p>@ViewBag.rateMath/10</p>
                 }
                 else
                 {
-                    <p>0/5</p>
+                    <p>0/10</p>
+                    @using (Html.BeginForm("AddUserRating", "Game", FormMethod.Post))
+                    {
+                        <select name="UserRating">
+                            <option value="0" selected>Add Rating</option>
+                            <option value="1">1 - Horrible</option>
+                            <option value="2">2 - Not Recommended</option>
+                            <option value="3">3 - Bad</option>
+                            <option value="4">4 - Below Average</option>
+                            <option value="5">5 - Average</option>
+                            <option value="6">6 - Above Average</option>
+                            <option value="7">7 - Good Game</option>
+                            <option value="8">8 - Very Good</option>
+                            <option value="9">9 - Must Play</option>
+                            <option value="10">10 - Masterpiece</option>
+                        </select>
+                        <input type="submit" value="Submit Rating" />
+                    }
                 }
             </div>
         </div>
@@ -47,11 +64,13 @@
     </div>
     <div class="row">
         <h5>Comments</h5>
+
         <div class="form-group">
             <textarea id="commentSection" placeholder="Post Comments" class="form-control"></textarea>
-            <input type="button" value="Post Comment" id="postComment"/>
+            <input type="submit" value="Post Comment" id="postComment" />
         </div>
-        
+
+
         @if (Model.Comments != null)
         {
             @foreach (var comment in Model.Comments)
@@ -61,7 +80,7 @@
                         @comment.User
                     </div>
                     <div class="card-body">
-                        <p>@comment.Content</p>
+                        <p>@comment.Comments</p>
                     </div>
                 </div>
             }
@@ -69,7 +88,7 @@
         else
         {
             <p>No Comments</p>
-            }
+        }
     </div>
 </div>
 @section Scripts

@@ -48,7 +48,7 @@
                                         <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
                                         <td class="col-2">@item.Description</td>
                                     }
-                                    <td class="col-2"><button class="btn btn-secondary">Add to game list</button></td>
+                                    <td class="col-2"><button class="btn btn-secondary addButton" id="button+@item.Id">Add to game list</button></td>
                                 </tr>
                             }
                         </tbody>
@@ -166,3 +166,29 @@
             }
         </div>
 </div>
+@section Scripts
+{
+    <script>
+        var buttonClass = document.getElementsByClassName("addButton");
+        for (var i = 0; i < buttonClass.length; i++) {
+            buttonClass[i].addEventListener("click", function () {
+                var itemId = this.id.split("+")[1];
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Search/AddToGameList',
+                    data: { gameId: itemId },
+                    success: function (out) {
+                        if (out) {
+                            alert("Added game to library");
+                            location.reload();
+                        }
+                        else {
+                            alert("Could not add game to library");
+                        }
+                    }
+                });
+            })
+        }
+    </script>
+}

@@ -28,6 +28,8 @@
         <div class="d-flex justify-content-around row">
             <button class="btn btn-success col-sm-2" id="start">Start Scan</button>
             <button class="btn btn-danger col-sm-2" id="stop">Stop Scan</button>
+        </div>
+        <div class="d-flex justify-content-around row">
             <canvas style="display: none;" id="canvas" width="475" height="475"></canvas>
         </div>
     </div>
@@ -89,24 +91,21 @@
                 capture();
                 save();
                 loop(true);
-            }, 250)
+            }, 500)
         } else {
             clearTimeout(timeout)
         }
     }
 
     function save() {
-        // Below new canvas to generate flip/mirron image from existing canvas
+        // Below new canvas to generate flip/mirror image from existing canvas
         var destinationCanvas = document.createElement("canvas");
         var destCtx = destinationCanvas.getContext('2d');
 
-
-
-        destinationCanvas.height = 475;
-        destinationCanvas.width = 475;
+        destinationCanvas.width = "475";
+        destinationCanvas.height = "475";
 
         destCtx.translate(video.videoWidth, 0);
-
 
         destCtx.scale(-1, 1);
 
@@ -126,8 +125,8 @@
             success: function (out) {
                 if (out != "fail") {
                     loop(false);
-                    document.getElementById("hiddenInput").value = out;
-                    document.getElementById("sendForm").click();
+                    document.getElementById("barcodeInput").value = out;
+                    document.getElementById("barcodeSubmit").click();
                 }
                 console.log(out);
             }

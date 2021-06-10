@@ -25,9 +25,15 @@ namespace GameDB.Domain.DomainClasses
         public string Role_Name { get; set; }
     }
 
-    public class User_Has_Games
+    public class Users_Has_Games
     {
         public User user { get; set; }
         public List<Game> Games { get; set; }
+    }
+
+    public class Insert_User_Games
+    {
+        public int Users_id { get; set; }
+        public int Games_id { get; set; }
     }
 }

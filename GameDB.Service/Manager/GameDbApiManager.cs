@@ -1,13 +1,15 @@
 ﻿using GameDB.Domain.DomainClasses;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-
+using ZXing;
+using System.Drawing;
 
 namespace GameDB.Service
 {
@@ -35,8 +37,9 @@ namespace GameDB.Service
         Task<HttpStatusCode> CreateGenre(Genre genre);
         Task<HttpStatusCode> CreateRole(Role role);
         Task<List<ExternalGame>> GetExternalGame(string code);
-
         Task<Search> GetSearchResult(string input, string function);
+        string ReadQrCode(byte[] qrCode);
+        Task<HttpStatusCode> CreateUserGames(Insert_User_Games user_Games);
     }
     public class GameDbApiManager : IGameDbApiManager
     {
@@ -223,6 +226,7 @@ namespace GameDB.Service
                 return null;
             }
         }
+        
         public async Task<List<Game>> SearchGame(string name)
         {
             try
@@ -247,16 +251,16 @@ namespace GameDB.Service
         {
             try
             {
-                List<Game> game = null;
+                Game game = null;
                 HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/games/" + Id);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
                     {
-                        game = await content.ReadFromJsonAsync<List<Game>>();
+                        game = await content.ReadFromJsonAsync<Game>();
                     }
                 }
-                return game.FirstOrDefault();
+                return game;
             }
             catch(Exception)
             {
@@ -464,6 +468,92 @@ namespace GameDB.Service
                 return null;
             }
 
+        }
+
+        public static byte[] ReadToEnd(Stream stream)
+        {
+            long originalPosition = 0;
+
+            if (stream.CanSeek)
+            {
+                originalPosition = stream.Position;
+                stream.Position = 0;
+            }
+
+            try
+            {
+                byte[] readBuffer = new byte[4096];
+
+                int totalBytesRead = 0;
+                int bytesRead;
+
+                while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
+                {
+                    totalBytesRead += bytesRead;
+
+                    if (totalBytesRead == readBuffer.Length)
+                    {
+                        int nextByte = stream.ReadByte();
+                        if (nextByte != -1)
+                        {
+                            byte[] temp = new byte[readBuffer.Length * 2];
+                            Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
+                            Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
+                            readBuffer = temp;
+                            totalBytesRead++;
+                        }
+                    }
+                }
+
+                byte[] buffer = readBuffer;
+                if (readBuffer.Length != totalBytesRead)
+                {
+                    buffer = new byte[totalBytesRead];
+                    Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
+                }
+                return buffer;
+            }
+            finally
+            {
+                if (stream.CanSeek)
+                {
+                    stream.Position = originalPosition;
+                }
+            }
+        }
+        
+        public string ReadQrCode(byte[] qrCode)
+        {
+            BarcodeReader coreCompatReader = new BarcodeReader();
+
+            using (Stream stream = new MemoryStream(qrCode))
+            {
+                using (var coreCompatImage = (Bitmap)Image.FromStream(stream))
+                {
+                    if (coreCompatReader.Decode(coreCompatImage) is null)
+                    {
+                        return "fail";
+                    }
+                    else
+                    {
+                        return coreCompatReader.Decode(coreCompatImage).Text;
+                    }
+                }
+            }
+        }
+
+        public async Task<HttpStatusCode> CreateUserGames(Insert_User_Games user_Games)
+        {
+            try
+            {
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/InsertHere", user_Games);
+                response.EnsureSuccessStatusCode();
+                return response.StatusCode;
+            }
+            catch (Exception)
+            {
+                return HttpStatusCode.BadRequest;
+            }
         }
     }
 }
