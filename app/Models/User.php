@@ -42,4 +42,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function games(){
+        return $this->hasManyThrough(Game::class, User_has_game::class,'users_id','id','id','games_id');
+    }
 }
