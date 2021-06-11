@@ -7,9 +7,9 @@
     <h1>@Model.Title</h1>
     <div class="row">
         <div>
-            <img src="" alt="Pic Here Lol" class="col-sm-5"/>
+            <img src="" alt="Pic Here Lol" class="col-sm-4"/>
         </div>
-        <div class="container col-sm-7">
+        <div class="container col-sm-4">
             <div class="row">
                 <h6>Release Date</h6>
                 <p>@Model.Release_date</p>
@@ -56,6 +56,9 @@
                     }
                 }
             </div>
+        </div>
+        <div class="container col-sm-4">
+            <input type="button" class="btn btn-secondary" onclick="location.href = '@Url.Action("AddToLibrary", "Game", new { GameID = Model.Id})'" value="Add Game" />
         </div>
     </div>
     <div class="row">

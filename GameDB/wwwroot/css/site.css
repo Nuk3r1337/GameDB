@@ -1,5 +1,25 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+#interactive.viewport {
+
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    position: relative;
+}
+#interactive.viewport > canvas, #interactive.viewport > video {
+    max-width: 100%;
+    width: 100%;
+}
+
+video {
+    object-fit: contain;
+}
+canvas.drawing, canvas.drawingBuffer {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
 
 a.navbar-brand {
   white-space: normal;

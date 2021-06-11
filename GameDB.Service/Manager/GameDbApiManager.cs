@@ -40,6 +40,7 @@ namespace GameDB.Service
         Task<Search> GetSearchResult(string input, string function);
         string ReadQrCode(byte[] qrCode);
         Task<HttpStatusCode> CreateUserGames(Insert_User_Games user_Games);
+        Task<HttpStatusCode> CreateUserRating(User_Rating user_rating);
     }
     public class GameDbApiManager : IGameDbApiManager
     {
@@ -547,6 +548,20 @@ namespace GameDB.Service
             try
             {
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/InsertHere", user_Games);
+                response.EnsureSuccessStatusCode();
+                return response.StatusCode;
+            }
+            catch (Exception)
+            {
+                return HttpStatusCode.BadRequest;
+            }
+        }
+
+        public async Task<HttpStatusCode> CreateUserRating(User_Rating user_rating)
+        {
+            try
+            {
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/InsertHere", user_rating);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }

@@ -19,26 +19,98 @@
             </div>
         }
     </div>
+
     <div id="autoBarcode">
         <button class="btn btn-primary" id="manualButton">Type Barcode Manually</button>
-        <h1 class="d-flex justify-content-around row">Scan Here</h1>
+        @*<h1 class="d-flex justify-content-around row">Scan Here</h1>
         <div class="d-flex justify-content-around row">
             <video autoplay="true" id="videoElement" capture="enviroment" class="col-sm-8" style="border: 1px solid gray"></video>
-        </div>
+        </div>*@
+
+            <div id="interactive" class="viewport"></div>
+
         <div class="d-flex justify-content-around row">
             <button class="btn btn-success col-sm-2" id="start">Start Scan</button>
             <button class="btn btn-danger col-sm-2" id="stop">Stop Scan</button>
         </div>
-        <div class="d-flex justify-content-around row">
-            <canvas style="display: none;" id="canvas" width="475" height="475"></canvas>
+        <div id="result_strip">
+            <ul class="thumbnails"></ul>
         </div>
+        @*<div class="d-flex justify-content-around row">
+            <canvas style="display: none;" id="canvas" width="475" height="475"></canvas>
+        </div>*@
     </div>
 </div>
 
 @section Scripts
 {
+    <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
+    <script>
+        Quagga.init({
+            inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                //target: document.querySelector('#videoElement')    // Or '#yourElement' (optional)
+            },
+            decoder: {
+                readers: ["ean_reader"]
+            }
+        }, function (err) {
+            if (err) {
+                console.log(err);
+                return
+            }
+                console.log("Initialization finished. Ready to start");
+                Quagga.start();
+        });
+        document.getElementById("start").addEventListener("click", function () {
+            Quagga.start();
+        })
+        document.getElementById("stop").addEventListener("click", function () {
+            Quagga.stop();
+        })
+
+        Quagga.onProcessed(function (result) {
+            var drawingCtx = Quagga.canvas.ctx.overlay,
+                drawingCanvas = Quagga.canvas.dom.overlay;
+
+            if (result) {
+                if (result.boxes) {
+                    drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                    result.boxes.filter(function (box) {
+                        return box !== result.box;
+                    }).forEach(function (box) {
+                        Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+                    });
+                }
+
+                if (result.box) {
+                    Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
+                }
+
+                if (result.codeResult && result.codeResult.code) {
+                    Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+                }
+            }
+        });
+
+        Quagga.onDetected(function (result) {
+            setTimeout(function () {
+                var barcode = result.codeResult.code;
+                document.getElementById("barcodeInput").value = barcode;
+                if (document.getElementById("barcodeInput").value != null) {
+
+                    document.getElementById("barcodeSubmit").click();
+                }
+                else {
+                    console.log(document.getElementById("barcodeInput").value);
+                }
+            }, 500)
+        })
+    </script>
+
     @*<script type="text/javascript" src="https://unpkg.com/@@zxing/library@0.18.6/umd/index.min.js"></script>*@
-<script>
+@*<script>
     var startVideo = document.querySelector("#start");
     var video = document.querySelector("#videoElement");
     var stopVideo = document.querySelector("#stop");
@@ -157,7 +229,7 @@
         return "desktop";
     }
 
-</script>
+</script>*@
     <script>
         document.getElementById("manualButton").addEventListener("click", function () {
             document.getElementById("manualBarcode").style.display = "block";

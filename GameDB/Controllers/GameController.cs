@@ -77,5 +77,48 @@ namespace GameDB.Controllers
                 return false;
             }
         }
+    
+        [HttpPost]
+        public async Task<IActionResult> AddUserRating(int user_Rating)
+        {
+            try
+            {
+                User_Rating userR = new User_Rating { Rating = user_Rating };
+                var status = await gameManager.CreateUserRating(userR);
+                if(status == HttpStatusCode.Created)
+                {
+                    return RedirectToAction("GameIndex", "Game", new { GameID = gameID });
+                }
+                else
+                {
+                    return RedirectToAction("GameIndex", "Game", new { GameID = gameID });
+                }
+            }
+            catch(Exception)
+            {
+                return RedirectToAction("GameIndex", "Game", new { GameID = gameID });
+            }
+        }
+    
+        public async Task<IActionResult> AddToLibrary(int GameID)
+        {
+            try
+            {
+                Insert_User_Games insert = new Insert_User_Games { Users_id = 1, Games_id = GameID };
+                var status = await gameManager.CreateUserGames(insert);
+                if (status == HttpStatusCode.Created)
+                {
+                    return RedirectToAction("GameIndex", "Game", new { GameID = GameID });
+                }
+                else
+                {
+                    return RedirectToAction("GameIndex", "Game", new { GameID = GameID });
+                }
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("GameIndex", "Game", new { GameID = GameID });
+            }
+        }
     }
 }
