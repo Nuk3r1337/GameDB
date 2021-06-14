@@ -38,7 +38,8 @@ class GenreController extends Controller
     {
         $id = Genre::where('id',$id)->with('games')->first();
 
-        return response()->json($id);    }
+        return response()->json($id);
+    }
 
     /**
      * Update the specified resource in storage.
