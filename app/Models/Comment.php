@@ -14,6 +14,9 @@ class Comment extends Model
     ];
 
     public function game(){
-        return $this->belongsTo(Game::class,'id','games_id');
+        return $this->belongsTo(Game::class,'games_id','id');
+    }
+    public function user(){
+        return $this->belongsTo(User::class, 'users_id', 'id');
     }
 }

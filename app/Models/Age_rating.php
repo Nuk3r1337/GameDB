@@ -12,6 +12,6 @@ class Age_rating extends Model
     ];
 
     public function game(){
-        return $this->HasMany(Game::class);
+        return $this->hasMany(Game::class,'age_ratings_id','id');
     }
 }

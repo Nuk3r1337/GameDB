@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PublisherSeeder::class,
-            AgeRatingSeeder::class
+            AgeRatingSeeder::class,
+            GenreSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
     }

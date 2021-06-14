@@ -12,6 +12,6 @@ class Publisher extends Model
     ];
 
     public function game(){
-        return $this->hasMany(Game::class);
+        return $this->hasMany(Game::class,'publishers_id','id');
     }
 }

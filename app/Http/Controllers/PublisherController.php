@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller
+class PublisherController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        return Comment::with('user','game')->get();
+        return Publisher::all();
     }
 
     /**
@@ -25,7 +25,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        return Comment::create($request->all());
+        //
     }
 
     /**
@@ -36,7 +36,8 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        return Comment::find($id);
+        $id = Publisher::where('id', $id)->with('game')->first();
+        return response()->json($id);
     }
 
     /**
@@ -48,7 +49,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return Comment::find($id)->update($request->all());
+        //
     }
 
     /**
@@ -59,6 +60,6 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        return Comment::destroy($id);
+        //
     }
 }

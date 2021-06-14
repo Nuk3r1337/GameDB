@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
+use App\Models\Game;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller
+class GenreHasGamesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($genre)
     {
-        return Comment::with('user','game')->get();
+        $genre = Genre::where('id',$genre)->with('games')->first();
+
+        return response()->json($genre);
     }
 
     /**
@@ -25,7 +28,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        return Comment::create($request->all());
+        //
     }
 
     /**
@@ -36,7 +39,7 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        return Comment::find($id);
+        //
     }
 
     /**
@@ -48,7 +51,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return Comment::find($id)->update($request->all());
+        //
     }
 
     /**
@@ -59,6 +62,6 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        return Comment::destroy($id);
+        //
     }
 }
