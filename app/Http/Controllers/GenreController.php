@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Game;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 
-class GenreHasGamesController extends Controller
+class GenreController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($genre)
+    public function index()
     {
-        $genre = Genre::where('id',$genre)->with('games')->first();
-
-        return response()->json($genre);
+        return Genre::all();
     }
 
     /**
@@ -28,7 +25,7 @@ class GenreHasGamesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Genre::create($request->all());
     }
 
     /**
@@ -39,8 +36,9 @@ class GenreHasGamesController extends Controller
      */
     public function show($id)
     {
-        //
-    }
+        $id = Genre::where('id',$id)->with('games')->first();
+
+        return response()->json($id);    }
 
     /**
      * Update the specified resource in storage.
@@ -51,7 +49,7 @@ class GenreHasGamesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return Genre::find($id)->update($request->all());
     }
 
     /**
@@ -62,6 +60,6 @@ class GenreHasGamesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Genre::destroy($id);
     }
 }
