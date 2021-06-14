@@ -20,11 +20,13 @@ Route::resource('comments', 'App\Http\Controllers\CommentController');
 Route::resource('barcode', 'App\Http\Controllers\BarcodeController');
 Route::resource('users', 'App\Http\Controllers\UserController');
 Route::resource('agerating','App\Http\Controllers\Age_ratingController');
-Route::resource('publisher','App\Http\Controllers\publisherController');
+Route::resource('publisher','App\Http\Controllers\PublisherController');
+Route::resource('genres','App\Http\Controllers\GenreController');
+
 Route::get('agerating/{id}/games', 'App\Http\Controllers\Age_ratingController@show');
 Route::get('publisher/{id}/games','App\Http\Controllers\publisherController@show');
 Route::get('user/{id}/games', 'App\Http\Controllers\UserHasGamesController@index');
-Route::get('genre/{id}/games','App\Http\Controllers\GenreHasGamesController@index');
+Route::get('genre/{id}/games','App\Http\Controllers\GenreController@show');
 
 
 
