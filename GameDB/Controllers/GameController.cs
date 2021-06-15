@@ -35,18 +35,27 @@ namespace GameDB.Controllers
         [HttpGet]
         public async Task<IActionResult> EditGameAsync(int GameID)
         {
-            var game = await gameManager.GetGame(GameID);
-            return View(game);
+            GameEdit Ge = new GameEdit();
+            Ge.game = await gameManager.GetGame(GameID);
+            Ge.AgeRatings = await gameManager.GetAgeRating();
+            Ge.Publishers = await gameManager.GetPublishers();
+            Ge.Genres = await gameManager.GetGenres();
+
+            return View(Ge);
         }
-   
         [HttpPost]
-        public async Task<IActionResult> EditGame(Game game)
+        public async Task<IActionResult> EditGame(Game game, List<int> genreCheck)
         {
             try
             {
                 var edits = await gameManager.UpdateGame(game);
                 if(edits != null)
                 {
+                    foreach(int id in genreCheck)
+                    {
+                        Game_Has_Genre ghg = new Game_Has_Genre { Games_id = game.Id, Genres_id = id };
+                        var addGenre = await gameManager.CreateGenreForGame(ghg);
+                    }
                     return RedirectToAction("GameIndex", "Game", new { GameID = game.Id});
                 }
                 else
@@ -59,12 +68,11 @@ namespace GameDB.Controllers
                 return View(game.Id);
             }
         }
-    
-        public async Task<bool> PostCommentAsync(string comment)
+        public async Task<bool> PostCommentAsync(string comment, int game)
         {
             try
             {
-                Comment insert = new Comment { Comments = comment, Game = gameID };
+                Comment insert = new Comment { Comments = comment, games_id = game, users_id = 1 };
                 var api = await gameManager.CreateComment(insert);
                 if(api == HttpStatusCode.Created)
                 {
@@ -76,8 +84,7 @@ namespace GameDB.Controllers
             {
                 return false;
             }
-        }
-    
+        } 
         [HttpPost]
         public async Task<IActionResult> AddUserRating(int user_Rating)
         {

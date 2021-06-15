@@ -3,7 +3,7 @@
     ViewData["Title"] = "UserIndex";
 }
 
-<h1>@Model.Username</h1>
+<h1>@Model.Name</h1>
 <div class="container">
     <input type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("EditUser", "User", new { UserID = Model.Id })'" value="Edit User" />
     <div class="row">
@@ -12,7 +12,7 @@
         </div>
         <div class="col-sm-4">
             <h6>Creation Date</h6>
-            <p>@Model.Date_Created.DateTime.ToString("dd-MM-yyyy")</p>
+            <p>@Model.Created_At.DateTime.ToString("dd-MM-yyyy")</p>
         </div>
     </div>
     <div class="row">
@@ -27,18 +27,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th>Minecraft</th>
-                    <td>2011</td>
-                    <td>Mojang</td>
-                    <td>5/5</td>
-                </tr>
-                <tr>
-                    <th>Not Minecraft</th>
-                    <td>2011</td>
-                    <td>Not Mojang</td>
-                    <td>0/5</td>
-                </tr>
+                @foreach (var games in Model.Games)
+                {
+                    <tr>
+                        <th>@games.Title</th>
+                        <td>@games.Release_date</td>
+                        <td>@games.Publisher</td>
+                        <td>@games.User_Ratings/5</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

@@ -22,16 +22,12 @@
 
     <div id="autoBarcode">
         <button class="btn btn-primary" id="manualButton">Type Barcode Manually</button>
-        @*<h1 class="d-flex justify-content-around row">Scan Here</h1>
-        <div class="d-flex justify-content-around row">
-            <video autoplay="true" id="videoElement" capture="enviroment" class="col-sm-8" style="border: 1px solid gray"></video>
-        </div>*@
 
-            <div id="interactive" class="viewport"></div>
+            <div id="interactive" class="viewport" width="475" height="475"></div>
 
         <div class="d-flex justify-content-around row">
-            <button class="btn btn-success col-sm-2" id="start">Start Scan</button>
-            <button class="btn btn-danger col-sm-2" id="stop">Stop Scan</button>
+            <button class="btn btn-success col-sm-3" id="start">Start Scan</button>
+            <button class="btn btn-danger col-sm-3" id="stop">Stop Scan</button>
         </div>
         <div id="result_strip">
             <ul class="thumbnails"></ul>
@@ -46,25 +42,24 @@
 {
     <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
     <script>
-        Quagga.init({
-            inputStream: {
-                name: "Live",
-                type: "LiveStream",
-                //target: document.querySelector('#videoElement')    // Or '#yourElement' (optional)
-            },
-            decoder: {
-                readers: ["ean_reader"]
-            }
-        }, function (err) {
-            if (err) {
-                console.log(err);
-                return
-            }
+        document.getElementById("start").addEventListener("click", function () {
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    //target: document.querySelector('#videoElement')    // Or '#yourElement' (optional)
+                },
+                decoder: {
+                    readers: ["ean_reader"]
+                }
+            }, function (err) {
+                if (err) {
+                    console.log(err);
+                    return
+                }
                 console.log("Initialization finished. Ready to start");
                 Quagga.start();
-        });
-        document.getElementById("start").addEventListener("click", function () {
-            Quagga.start();
+            });
         })
         document.getElementById("stop").addEventListener("click", function () {
             Quagga.stop();

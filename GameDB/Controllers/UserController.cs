@@ -18,7 +18,8 @@ namespace GameDB.Controllers
         }
         public async Task<IActionResult> UserIndexAsync(int UserID)
         {
-            var user = await _gameManager.GetUser(UserID);
+            //var user = await _gameManager.GetUser(UserID);
+            var user = await _gameManager.GetUserGames(UserID);
             return View(user);
         }
         

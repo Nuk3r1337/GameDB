@@ -16,7 +16,14 @@
             </div>
             <div class="row">
                 <h6>Publisher</h6>
-                <p>@Model.Publisher.Name</p>
+                @if (Model.Publisher == null)
+                {
+                    <p>No Publisher Info</p>
+                }
+                else
+                {
+                    <p>@Model.Publisher.Name</p>
+                }
             </div>
             <div class="row">
                 <h6>Genres</h6>
@@ -66,32 +73,40 @@
         <p>@Model.Description</p>
     </div>
     <div class="row">
-        <h5>Comments</h5>
+        <div class="container">
+            <h5>Comments</h5>
 
-        <div class="form-group">
-            <textarea id="commentSection" placeholder="Post Comments" class="form-control"></textarea>
-            <input type="submit" value="Post Comment" id="postComment" />
+            <div class="form-group row">
+                <textarea id="commentSection" placeholder="Post Comments" class="form-control"></textarea>
+                <input type="submit" value="Post Comment" id="postComment" />
+            </div>
+
+            <div class="row" style="margin-top: 1%">
+                <div class="container">
+                    @if (Model.Comments != null)
+                    {
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div class="card row">
+                                <div class="card-header">
+                                    @comment.users_id
+                                </div>
+                                <div class="card-body">
+                                    <p>@comment.Comments</p>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No Comments</p>
+                    }
+                </div>
+
+            </div>
         </div>
 
 
-        @if (Model.Comments != null)
-        {
-            @foreach (var comment in Model.Comments)
-            {
-                <div class="card">
-                    <div class="card-header">
-                        @comment.User
-                    </div>
-                    <div class="card-body">
-                        <p>@comment.Comments</p>
-                    </div>
-                </div>
-            }
-        }
-        else
-        {
-            <p>No Comments</p>
-        }
     </div>
 </div>
 @section Scripts
@@ -102,7 +117,11 @@
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("PostComment", "Game")',
-                data: { comment: document.getElementById("commentSection").value },
+                data:
+                {
+                    comment: document.getElementById("commentSection").value,
+                    game: @Model.Id 
+                },
                 success: function (out) {
                     if (out)
                     {

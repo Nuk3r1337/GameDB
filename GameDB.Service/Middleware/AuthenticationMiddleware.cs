@@ -40,8 +40,8 @@ namespace GameDB.Service.Middleware
                 ops.SlidingExpiration = true;
                 ops.ExpireTimeSpan = TimeSpan.FromHours(8);
             }).AddOAuth("GameDbAuth", ops => {
-                ops.ClientId = "93797d91-4017-4c0b-bb12-714b220382a1";
-                ops.ClientSecret = "6gkwYOtTzaitKvYUCBypzBpeBYCE2c0fcRt9h2KY";
+                ops.ClientId = "93adb279-8103-4619-8580-bc19f4afaa7d";
+                ops.ClientSecret = "GWtbgPs0gIWE3TDOeB89qACWC1EHX51LYOCQOOkI";
                 ops.CallbackPath = new PathString("/callback");
                 ops.AuthorizationEndpoint = $"{appSettings.ApiUrl}/oauth/authorize";
                 ops.TokenEndpoint = $"{appSettings.ApiUrl}/oauth/token";

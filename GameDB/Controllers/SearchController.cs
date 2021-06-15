@@ -39,6 +39,10 @@ namespace GameDB.Controllers
                     var release = await _gameManager.GetSearchResult(searchInput, "ReleaseDate");
                     ViewBag.Table = "Release";
                     return View(release);
+                case "genre":
+                    var genre = await _gameManager.GetSearchResult(searchInput, "Genre");
+                    ViewBag.Table = "Genre";
+                    return View(genre);
             }
 
             return RedirectToAction("Index", "Home");

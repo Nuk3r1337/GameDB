@@ -19,6 +19,11 @@ namespace GameDB.Domain.DomainClasses
         public List<Comment> Comments { get; set; }
         public List<User_Rating> User_Ratings { get; set; }
     }
+    public class Game_Has_Genre
+    {
+        public int Games_id { get; set; }
+        public int Genres_id { get; set; }
+    }
     public class User_Rating
     {
         public int Id { get; set; }
@@ -47,11 +52,13 @@ namespace GameDB.Domain.DomainClasses
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public List<Game> game { get; set; }
     }
     public class AgeRating
     {
         public int Id { get; set; }
         public string Age_rating { get; set; }
+        public List<Game> game { get; set; }
     }
     public class Genre
     {
@@ -62,7 +69,14 @@ namespace GameDB.Domain.DomainClasses
     {
         public int Id { get; set; }
         public string Comments { get; set; }
-        public string User { get; set; }
-        public int Game { get; set; }
+        public int users_id { get; set; }
+        public int games_id { get; set; }
+    }
+    public class GameEdit
+    {
+        public Game game { get; set; }
+        public List<Genre> Genres { get; set; }
+        public List<Publisher> Publishers { get; set; }
+        public List<AgeRating> AgeRatings { get; set; }
     }
 }

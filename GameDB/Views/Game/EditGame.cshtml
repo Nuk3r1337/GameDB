@@ -1,38 +1,66 @@
-﻿@model GameDB.Domain.DomainClasses.Game
+﻿@model GameDB.Domain.DomainClasses.GameEdit
 @{
     ViewData["Title"] = "EditGame";
 }
 
-<h1>Edit @Model.Title</h1>
+<h1>Edit @Model.game.Title</h1>
 
 @using (Html.BeginForm("EditGame", "Game", FormMethod.Post))
 {
     <div>
-        <input asp-for="Id" type="text" style="display: none;" />
-        <div class="form-group">
-            <label asp-for="Title">Title</label>
-            <input asp-for="Title" placeholder="@Model.Title" class="form-control" type="text" required/>
-        </div>
-        <div class="form-group" style="margin-top: 1%;">
-            <label asp-for="Description">Description</label>
-            <textarea asp-for="Description" class="form-control" required>@Model.Description</textarea>
-        </div>
-        <div class="form-group" style="margin-top: 1%;">
-            <label asp-for="Publisher">Publisher</label>
-            <input asp-for="Publisher" placeholder="@Model.Publisher" class="form-control" type="text" required/>
-        </div>
-        <div class="form-group" style="margin-top: 1%;">
-            <label asp-for="Age_rating">Age Rating</label>
-            <input asp-for="Age_rating" placeholder="@Model.Age_rating" class="form-control" type="text" required/>
-        </div>
-        <div class="form-group">
-            <label asp-for="Release_date">Release Date</label>
-            <input asp-for="Release_date" placeholder="@Model.Release_date" class="form-control" type="text" required/>
-        </div>
-        <div class="form-group" style="margin-top: 1%;">
-            <label asp-for="Game_genre">Genres</label>
-            <input asp-for="Game_genre" type="text" class="form-control" required/>
-        </div>
+        <input asp-for="game.Id" type="text" style="display: none;" />
+            <div class="form-group">
+                <label asp-for="game.Title">Title</label>
+                <input asp-for="game.Title" placeholder="@Model.game.Title" class="form-control" type="text" required />
+            </div>
+            <div class="form-group" style="margin-top: 1%;">
+                <label asp-for="game.Description">Description</label>
+                <textarea asp-for="game.Description" class="form-control" required>@Model.game.Description</textarea>
+            </div>
+            <div class="form-group" style="margin-top: 1%;">
+                <label asp-for="game.Publisher">Publisher</label>
+                <select asp-for="game.Publisher" class="form-group">
+                    @foreach (var publishers in Model.Publishers)
+                    {
+                        if (publishers.Name != "unknown")
+                        {
+                            <option value="@publishers.Id">@publishers.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group" style="margin-top: 1%;">
+                <label asp-for="game.Age_rating">Age Rating</label>
+                <select asp-for="game.Publisher" class="form-group">
+                    @foreach (var ages in Model.AgeRatings)
+                    {
+                        if (ages.Age_rating != "unknown")
+                        {
+                            <option value="@ages.Id">@ages.Age_rating</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="game.Release_date">Release Date</label>
+                <input asp-for="game.Release_date" placeholder="@Model.game.Release_date" class="form-control" type="text" required />
+            </div>
+            <div class="form-group" style="margin-top: 1%;">
+                <div>
+                    <label class="form-check-label">Genres</label>
+                </div>
+
+                @foreach (var genre in Model.Genres)
+                {
+                    if (genre.Name != "unknown")
+                    {
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="genreCheck" value="@genre.Id" id="Box+@genre.Id" />
+                            <label for="Box+@genre.Id" class="form-check-label">@genre.Name</label>
+                        </div>
+                    }
+                }
+            </div>            
         <input type="submit" class="btn btn-primary" value="Edit Game" />
     </div>
 }

@@ -32,15 +32,21 @@ namespace GameDB.Service
         Task<HttpStatusCode> CreateBarcode(InsertBarcode barcode);
         Task<Barcode> UpdateBarcode(Barcode barcode);
         Task<HttpStatusCode> DeleteBarcode(string code);
-        Task<HttpStatusCode> CreatePublisher(Publisher publisher);
-        Task<HttpStatusCode> CreateAgeRating(AgeRating ageRating);
-        Task<HttpStatusCode> CreateGenre(Genre genre);
         Task<HttpStatusCode> CreateRole(Role role);
         Task<List<ExternalGame>> GetExternalGame(string code);
         Task<Search> GetSearchResult(string input, string function);
         string ReadQrCode(byte[] qrCode);
         Task<HttpStatusCode> CreateUserGames(Insert_User_Games user_Games);
+        Task<User> GetUserGames(int userId);
+        Task<HttpStatusCode> DeleteUserGames(Insert_User_Games user_Games);
         Task<HttpStatusCode> CreateUserRating(User_Rating user_rating);
+        Task<List<Publisher>> GetPublishers();
+        Task<List<AgeRating>> GetAgeRating();
+        Task<List<Genre>> GetGenres();
+        Task<HttpStatusCode> CreateGenreForGame(Game_Has_Genre game);
+        Task<List<Game>> GetPublisherGames(int id);
+        Task<List<Game>> GetAgeRatingGames(int id);
+        Task<List<Game>> GetGenreGames(int id);
     }
     public class GameDbApiManager : IGameDbApiManager
     {
@@ -61,26 +67,12 @@ namespace GameDB.Service
             return client;
         }
 
-        public async Task<HttpStatusCode> CreateAgeRating(AgeRating ageRating)
-        {
-            try
-            {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", ageRating);
-                response.EnsureSuccessStatusCode();
-                return response.StatusCode;
-            }
-            catch (Exception)
-            {
-                return HttpStatusCode.BadRequest;
-            }
-        }
-
         public async Task<HttpStatusCode> CreateComment(Comment comment)
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", comment);
-                response.EnsureSuccessStatusCode();
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/comments", comment);
+                //response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }
             catch(Exception)
@@ -107,34 +99,6 @@ namespace GameDB.Service
             catch (Exception)
             {
                 return null;
-            }
-        }
-
-        public async Task<HttpStatusCode> CreateGenre(Genre genre)
-        {
-            try
-            {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/category", genre);
-                response.EnsureSuccessStatusCode();
-                return response.StatusCode;
-            }
-            catch (Exception)
-            {
-                return HttpStatusCode.BadRequest;
-            }
-        }
-
-        public async Task<HttpStatusCode> CreatePublisher(Publisher publisher)
-        {
-            try
-            {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/category", publisher);
-                response.EnsureSuccessStatusCode();
-                return response.StatusCode;
-            }
-            catch (Exception)
-            {
-                return HttpStatusCode.BadRequest;
             }
         }
 
@@ -547,7 +511,7 @@ namespace GameDB.Service
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/InsertHere", user_Games);
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/", user_Games);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }
@@ -569,6 +533,128 @@ namespace GameDB.Service
             {
                 return HttpStatusCode.BadRequest;
             }
+        }
+
+        public async Task<User> GetUserGames(int userId)
+        {
+            try
+            {
+                User games = null;
+                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/user/" + userId + "/games");
+                if (response.IsSuccessStatusCode)
+                {
+                    using (HttpContent content = response.Content)
+                    {
+                        games = await content.ReadFromJsonAsync<User>();
+                        return games;
+                    }
+                }
+                return null;
+
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+        }
+        public Task<HttpStatusCode> DeleteUserGames(Insert_User_Games user_Games)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<Publisher>> GetPublishers()
+        {
+            try
+            {
+                List<Publisher> publisher = null;
+                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/publishers");
+                using (HttpContent content = Response.Content)
+                {
+                    if (Response.IsSuccessStatusCode)
+                    {
+                        publisher = await content.ReadFromJsonAsync<List<Publisher>>();
+                        return publisher;
+                    }
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AgeRating>> GetAgeRating()
+        {
+            try
+            {
+                List<AgeRating> ages = null;
+                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/ageratings");
+                using (HttpContent content = Response.Content)
+                {
+                    if (Response.IsSuccessStatusCode)
+                    {
+                        ages = await content.ReadFromJsonAsync<List<AgeRating>>();
+                        return ages;
+                    }
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<Genre>> GetGenres()
+        {
+            try
+            {
+                List<Genre> genres = null;
+                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/genres");
+                using (HttpContent content = Response.Content)
+                {
+                    if (Response.IsSuccessStatusCode)
+                    {
+                        genres = await content.ReadFromJsonAsync<List<Genre>>();
+                        return genres;
+                    }
+                }
+                return null;
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<HttpStatusCode> CreateGenreForGame(Game_Has_Genre game)
+        {
+            try
+            {
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/InsertHere", game);
+                response.EnsureSuccessStatusCode();
+                return response.StatusCode;
+            }
+            catch (Exception)
+            {
+                return HttpStatusCode.BadRequest;
+            }
+        }
+
+        public Task<List<Game>> GetPublisherGames(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Game>> GetAgeRatingGames(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Game>> GetGenreGames(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
