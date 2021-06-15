@@ -22,11 +22,12 @@ Route::resource('users', 'App\Http\Controllers\UserController');
 Route::resource('ageratings','App\Http\Controllers\Age_ratingController');
 Route::resource('publishers','App\Http\Controllers\PublisherController');
 Route::resource('genres','App\Http\Controllers\GenreController');
+Route::resource('gamegenres', 'App\Http\Controllers\GamesHasGenresController');
 
 Route::get('agerating/{id}/games', 'App\Http\Controllers\Age_ratingController@show');
 Route::get('publisher/{id}/games','App\Http\Controllers\publisherController@show');
 Route::get('user/{id}/games', 'App\Http\Controllers\UserHasGamesController@index');
-Route::get('genre/{id}/games','App\Http\Controllers\GenreController@show');
+Route::get('genre/{id}/games','App\Http\Controllers\GamesHasGenresController@show');
 
 
 

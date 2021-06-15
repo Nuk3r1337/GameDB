@@ -2,24 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Game;
+use App\Models\Genre;
 use App\Models\Games_has_genre;
-use App\Models\User;
-use App\Models\User_has_game;
 use Illuminate\Http\Request;
 
-class UserHasGamesController extends Controller
+class GamesHasGenresController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($user)
+    public function index()
     {
-        $user = User::where('id',$user)->with('games')->first();
-
-        return response()->json($user);
+        //
     }
 
     /**
@@ -30,7 +26,7 @@ class UserHasGamesController extends Controller
      */
     public function store(Request $request)
     {
-        return User_has_game::create($request->all());
+        return Games_has_genre::create($request->all());
     }
 
     /**
@@ -41,7 +37,9 @@ class UserHasGamesController extends Controller
      */
     public function show($id)
     {
-        //
+        $id = Genre::where('id',$id)->with('games')->first();
+
+        return response()->json($id);
     }
 
     /**
@@ -64,6 +62,6 @@ class UserHasGamesController extends Controller
      */
     public function destroy($id)
     {
-        return Games_has_genre::destroy($id);
+        //
     }
 }

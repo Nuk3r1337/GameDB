@@ -49,7 +49,9 @@ class GameController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return Game::find($id)->update($request->all());
+        $game = Game::find($id);
+        $game->update($request->all());
+        return $game;
     }
 
     /**
