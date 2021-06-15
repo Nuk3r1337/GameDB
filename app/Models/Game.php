@@ -35,6 +35,6 @@ class Game extends Model
     }
 
     public function gameGenre(){
-        return $this->hasMany(Games_has_genre::class, 'games_id','id');
+        return $this->hasMany(Games_has_genre::class, 'games_id','id')->with('genre');
     }
 }

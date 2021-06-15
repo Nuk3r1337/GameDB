@@ -15,7 +15,7 @@ class GamesHasGenresController extends Controller
      */
     public function index()
     {
-        //
+        return Games_has_genre::with('genre')->get();
     }
 
     /**

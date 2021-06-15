@@ -21,7 +21,7 @@ class Games_has_genre extends Model
         return $this->belongsTo(Game::class, 'id','games_id');
     }
     public function genre(){
-        return $this->belongsTo(Genre::class, 'id', 'genre_id');
+        return $this->hasOne(Genre::class, 'id', 'genre_id');
     }
 
 }
