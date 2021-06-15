@@ -10,8 +10,10 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using ZXing;
 using System.Drawing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 
-namespace GameDB.Service
+namespace GameDB.Service.Manager
 {
     public interface IGameDbApiManager
     {
@@ -34,7 +36,6 @@ namespace GameDB.Service
         Task<HttpStatusCode> DeleteBarcode(string code);
         Task<HttpStatusCode> CreateRole(Role role);
         Task<List<ExternalGame>> GetExternalGame(string code);
-        Task<Search> GetSearchResult(string input, string function);
         string ReadQrCode(byte[] qrCode);
         Task<HttpStatusCode> CreateUserGames(Insert_User_Games user_Games);
         Task<User> GetUserGames(int userId);
@@ -44,25 +45,25 @@ namespace GameDB.Service
         Task<List<AgeRating>> GetAgeRating();
         Task<List<Genre>> GetGenres();
         Task<HttpStatusCode> CreateGenreForGame(Game_Has_Genre game);
-        Task<List<Game>> GetPublisherGames(int id);
-        Task<List<Game>> GetAgeRatingGames(int id);
-        Task<List<Game>> GetGenreGames(int id);
     }
     public class GameDbApiManager : IGameDbApiManager
     {
         private readonly HttpClient httpClient;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public GameDbApiManager(IAppSettings appSettings)
+        public GameDbApiManager(IAppSettings appSettings, IHttpContextAccessor httpContextAccessor)
         {
             this.httpClient = CreateHttpClientAsync(appSettings);
+            this.httpContextAccessor = httpContextAccessor;
         }
 
-        private static HttpClient CreateHttpClientAsync(IAppSettings appSettings)
+        private HttpClient CreateHttpClientAsync(IAppSettings appSettings)
         {
             HttpClient client = new();
             client.BaseAddress = new Uri(appSettings.ApiUrl);
+            var accessToken = httpContextAccessor.HttpContext.GetTokenAsync("access_token").Result;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             return client;
         }
@@ -391,50 +392,6 @@ namespace GameDB.Service
             }
         }
 
-        public async Task<Search> GetSearchResult(string input, string function)
-        {
-            try
-            {
-                Search search = new Search();
-                switch(function)
-                {
-                    case "User":
-                        List<User> users = null;
-                        HttpResponseMessage response = await httpClient.GetAsync( httpClient.BaseAddress + "/api/users/" + input);
-                        if (response.IsSuccessStatusCode)
-                        {
-                            using (HttpContent content = response.Content)
-                            {
-                                users = await content.ReadFromJsonAsync<List<User>>();
-                                search.Users = users;
-                                return search;
-                            }
-                        }
-                        return null;
-
-                    case "Game":
-                        List<Game> game = null;
-                        HttpResponseMessage gameResponse = await httpClient.GetAsync(httpClient.BaseAddress + "/api/games/" + input);
-                        if (gameResponse.IsSuccessStatusCode)
-                        {
-                            using (HttpContent content = gameResponse.Content)
-                            {
-                                game = await content.ReadFromJsonAsync<List<Game>>();
-                                search.Games = game;
-                                return search;
-                            }
-                        }
-                        return null;
-                }
-                return null;
-            }
-            catch(Exception)
-            {
-                return null;
-            }
-
-        }
-
         public static byte[] ReadToEnd(Stream stream)
         {
             long originalPosition = 0;
@@ -642,19 +599,5 @@ namespace GameDB.Service
             }
         }
 
-        public Task<List<Game>> GetPublisherGames(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Game>> GetAgeRatingGames(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Game>> GetGenreGames(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

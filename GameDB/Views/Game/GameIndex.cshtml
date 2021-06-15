@@ -1,4 +1,5 @@
-﻿@model GameDB.Domain.DomainClasses.Game
+﻿@using System.Security.Claims; 
+@model GameDB.Domain.DomainClasses.Game
 @{
     ViewData["Title"] = "Index";
 }
@@ -76,10 +77,21 @@
         <div class="container">
             <h5>Comments</h5>
 
-            <div class="form-group row">
-                <textarea id="commentSection" placeholder="Post Comments" class="form-control"></textarea>
-                <input type="submit" value="Post Comment" id="postComment" />
-            </div>
+            @if (Context.User.Identity.IsAuthenticated)
+            {
+                <div class="form-group row">
+                    <textarea id="commentSection" placeholder="Post Comments" class="form-control"></textarea>
+                    <input type="submit" value="Post Comment" id="postComment" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group row">
+                    <textarea id="commentSection" placeholder="Post Comments" class="form-control" disabled></textarea>
+                    <input type="submit" value="Post Comment" id="postComment" disabled/>
+                </div>
+            }
+
 
             <div class="row" style="margin-top: 1%">
                 <div class="container">
@@ -87,14 +99,21 @@
                     {
                         @foreach (var comment in Model.Comments)
                         {
-                            <div class="card row">
-                                <div class="card-header">
-                                    @comment.users_id
-                                </div>
-                                <div class="card-body">
-                                    <p>@comment.Comments</p>
-                                </div>
+                    <div class="card row">
+                        <div class="card-header">
+                            @comment.users_id
+                        </div>
+                        <div class="card-body">
+                            <p>@comment.Comments</p>
+                        </div>
+                        @if (int.Parse(Context.User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value) == comment.users_id)
+                        {
+                            <div class="card-footer">
+                                <button id="comment+@comment.Id" class="btn btn-danger">Delete Comment</button>
                             </div>
+                        }
+
+                    </div>
                         }
                     }
                     else

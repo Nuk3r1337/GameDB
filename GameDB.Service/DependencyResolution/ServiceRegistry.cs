@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameDB.Domain.DomainClasses;
+using GameDB.Service.Manager;
 using GameDB.Service.Middleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ namespace GameDB.Service.DependencyResolution
             AuthenticationMiddleware.AddAuthentication(services, appSettings);
 
             services.AddScoped<IGameDbApiManager, GameDbApiManager>();
+            services.AddScoped<IGameDBSearchManager, GameDBSearchManager>();
         }
 
 

@@ -1,11 +1,15 @@
-﻿@model GameDB.Domain.DomainClasses.User
+﻿@using System.Security.Claims; 
+@model GameDB.Domain.DomainClasses.User
 @{
     ViewData["Title"] = "UserIndex";
 }
 
 <h1>@Model.Name</h1>
 <div class="container">
-    <input type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("EditUser", "User", new { UserID = Model.Id })'" value="Edit User" />
+    @if (int.Parse(Context.User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value) == Model.Id)
+    {
+        <input type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("EditUser", "User", new { UserID = Model.Id })'" value="Edit User" />
+    }
     <div class="row">
         <div class="col-sm-8">
             Memes

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using GameDB.Service;
 using GameDB.Domain.DomainClasses;
 using System.Net;
+using GameDB.Service.Manager;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameDB.Controllers
 {
@@ -22,7 +24,8 @@ namespace GameDB.Controllers
             var user = await _gameManager.GetUserGames(UserID);
             return View(user);
         }
-        
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> EditUserAsync(int UserID)
         {

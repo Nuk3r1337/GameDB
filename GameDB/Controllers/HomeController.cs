@@ -12,6 +12,8 @@ using System.Net;
 using ZXing;
 using System.IO;
 using System.Drawing;
+using GameDB.Service.Manager;
+
 namespace GameDB.Controllers
 {
     public class HomeController : Controller

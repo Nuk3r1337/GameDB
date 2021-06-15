@@ -9,12 +9,39 @@
             {
                 <div class="form-group">
                     <label for="searchInput">Search</label>
-                    <input type="text" name="searchInput" id="searchInput" class="form-control"/>
-                    <select name="searchType" class="form-select">
+                    <div id="inputDiv">
+                        <input type="text" name="searchInput" id="searchInput" class="form-control" />
+                    </div>
+                    <div id="publisherDiv" style="display:none;">
+                        <select name="searchInput" class="form-select" id="pubInput" disabled>
+                            @foreach(var publisher in Model.Publishers)
+                            {
+                                <option value="@publisher.Id">@publisher.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div id="ageDiv" style="display:none;">
+                        <select name="searchInput" class="form-select" id="ageInput" disabled>
+                            @foreach (var age in Model.AgeRatings)
+                            {
+                                <option value="@age.Id">@age.Age_rating</option>
+                            }
+                        </select>
+                    </div>
+                    <div id="genreDiv" style="display:none;">
+                        <select name="searchInput" class="form-select" id="genreInput" disabled>
+                            @foreach (var genres in Model.Genres)
+                            {
+                                <option value="@genres.Id">@genres.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <select name="searchType" class="form-select" id="selectFunction">
                         <option selected value="gameTitles">Titles</option>
                         <option value="gamePublishers">Publishers</option>
                         <option value="ageRating">Age Rating</option>
                         <option value="releaseDate">Release Date</option>
+                        <option value="genre">Genres</option>
                         <option value="usernames">Users</option>
                     </select>
                     <input type="submit" value="Search" />
@@ -31,25 +58,43 @@
                                 <th scope="col">ID</th>
                                 <th scope="col">Title</th>
                                 <th scope="col">Description</th>
+                                <th scope="col">Publisher</th>
+                                <th scope="col">Release Date</th>
+                                <th scope="col">Age Rating</th>
+                                <th scope="col">Genres</th>
+                                <th scope="col">Add Game</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.Games)
                             {
-                                <tr>
-                                    <th class="col-2" scope="row">@item.Id</th>
-                                    @if (item.Description == "" || item.Description == null || item.Description == "No Description")
-                                    {
-                                        <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})" style="color: red">@item.Title</a></td>
-                                        <td class="col-2">Details are missing</td>
-                                    }
-                                    else
-                                    {
-                                        <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
-                                        <td class="col-2">@item.Description</td>
-                                    }
-                                    <td class="col-2"><button class="btn btn-secondary addButton" id="button+@item.Id">Add to game list</button></td>
-                                </tr>
+                            <tr>
+                                <th class="col-2" scope="row">@item.Id</th>
+                                @if (item.Description == "" || item.Description == null || item.Description == "No Description")
+                                {
+                                    <td class="col-1"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})" style="color: red">@item.Title</a></td>
+                                    <td class="col-1">Details are missing</td>
+                                    <td class="col-1">No Publisher</td>
+                                    <td class="col-1">No Release Date</td>
+                                    <td class="col-1">No Age Rating</td>
+                                    <td class="col-1">No Genres</td>
+                                }
+                                else
+                                {
+                                    <td class="col-1"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
+                                    <td class="col-1">@item.Description</td>
+                                    <td class="col-1">@item.Publisher.Name</td>
+                                    <td class="col-1">@item.Release_date</td>
+                                    <td class="col-1">@item.Age_rating.Age_rating</td>
+                                    <td class="col-1">
+                                        @foreach(var genres in item.Game_genre)
+                                        {
+                                            <p>@genres.Name+, </p>;
+                                        }
+                                    </td>
+                                }
+                                <td class="col-4"><button class="btn btn-secondary addButton" id="button+@item.Id">Add to game list</button></td>
+                            </tr>
                             }
                         </tbody>
                     </table>
@@ -73,101 +118,77 @@
                         </tbody>
                     </table>
                     break;
-                case "PubTable":
-                    <table class="table table-striped">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Games)
-                            {
-                            <tr>
-                                <th class="col-2" scope="row">@item.Id</th>
-                                @if (item.Description == "" || item.Description == null || item.Description == "No Description")
-                                {
-                                    <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})" style="color: red">@item.Title</a></td>
-                                    <td class="col-2">Details are missing</td>
-                                }
-                                else
-                                {
-                                    <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
-                                    <td class="col-2">@item.Description</td>
-                                    <td class="col-2">@item.Publisher.Name</td>
-                                }
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                    break;
-                case "Ages":
-                    <table class="table table-striped">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Games)
-                            {
-                                <tr>
-                                    <th class="col-2" scope="row">@item.Id</th>
-                                    @if (item.Description == "" || item.Description == null || item.Description == "No Description")
-                                    {
-                                        <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})" style="color: red">@item.Title</a></td>
-                                        <td class="col-2">Details are missing</td>
-                                    }
-                                    else
-                                    {
-                                        <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
-                                        <td class="col-2">@item.Description</td>
-                                        <td class="col-2">@item.Age_rating.Age_rating</td>
-                                    }
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    break;
-                case "Release":
-                    <table class="table table-striped">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Games)
-                            {
-                            <tr>
-                                <th class="col-2" scope="row">@item.Id</th>
-                                @if (item.Description == "" || item.Description == null || item.Description == "No Description")
-                                {
-                                    <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})" style="color: red">@item.Title</a></td>
-                                    <td class="col-2">Details are missing</td>
-                                }
-                                else
-                                {
-                                    <td class="col-2"><a href="@Url.Action("GameIndex", "Game", new { GameID = item.Id})">@item.Title</a></td>
-                                    <td class="col-2">@item.Description</td>
-                                    <td class="col-2">@item.Release_date</td>
-                                }
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                    break;
             }
         </div>
 </div>
 @section Scripts
 {
+    <script>
+        var input = document.getElementById("inputDiv");
+        var publisher = document.getElementById("publisherDiv");
+        var age = document.getElementById("ageDiv");
+        var genre = document.getElementById("genreDiv");
+
+        document.getElementById("selectFunction").addEventListener("change", function () {
+            switch (document.getElementById("selectFunction").value) {
+                case "gameTitles":
+                    input.style.display = "block";
+                    publisher.style.display = "none";
+                    age.style.display = "none";
+                    genre.style.display = "none";
+
+                    document.getElementById("searchInput").disabled = false;
+                    document.getElementById("pubInput").disabled = true;
+                    document.getElementById("ageInput").disabled = true;
+                    document.getElementById("genreInput").disabled = true;
+                    break;
+                case "gamePublishers":
+                    input.style.display = "none";
+                    publisher.style.display = "block";
+                    age.style.display = "none";
+                    genre.style.display = "none";
+
+                    document.getElementById("searchInput").disabled = true;
+                    document.getElementById("pubInput").disabled = false;
+                    document.getElementById("ageInput").disabled = true;
+                    document.getElementById("genreInput").disabled = true;
+                    break;
+                case "ageRating":
+                    input.style.display = "none";
+                    publisher.style.display = "none";
+                    age.style.display = "block";
+                    genre.style.display = "none";
+
+                    document.getElementById("searchInput").disabled = true;
+                    document.getElementById("pubInput").disabled = true;
+                    document.getElementById("ageInput").disabled = false;
+                    document.getElementById("genreInput").disabled = true;
+                    break;
+                case "genre":
+                    input.style.display = "none";
+                    publisher.style.display = "none";
+                    age.style.display = "none";
+                    genre.style.display = "block";
+
+                    document.getElementById("searchInput").disabled = true;
+                    document.getElementById("pubInput").disabled = true;
+                    document.getElementById("ageInput").disabled = true;
+                    document.getElementById("genreInput").disabled = false;
+                    break;
+                case "usernames":
+                    input.style.display = "block";
+                    publisher.style.display = "none";
+                    age.style.display = "none";
+                    genre.style.display = "none";
+
+                    document.getElementById("searchInput").disabled = false;
+                    document.getElementById("pubInput").disabled = true;
+                    document.getElementById("ageDiv").disabled = true;
+                    document.getElementById("genreInput").disabled = true;
+                    break;
+            }
+        })
+    </script>
     <script>
         var buttonClass = document.getElementsByClassName("addButton");
         for (var i = 0; i < buttonClass.length; i++) {

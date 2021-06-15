@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameDB.Domain.DomainClasses;
 using System.Net;
+using GameDB.Service.Manager;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace GameDB.Controllers
 {
@@ -33,6 +36,7 @@ namespace GameDB.Controllers
             return View(game);
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> EditGameAsync(int GameID)
         {
             GameEdit Ge = new GameEdit();
@@ -44,6 +48,7 @@ namespace GameDB.Controllers
             return View(Ge);
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> EditGame(Game game, List<int> genreCheck)
         {
             try
@@ -68,11 +73,13 @@ namespace GameDB.Controllers
                 return View(game.Id);
             }
         }
+
         public async Task<bool> PostCommentAsync(string comment, int game)
         {
             try
             {
-                Comment insert = new Comment { Comments = comment, games_id = game, users_id = 1 };
+                int userID = int.Parse(HttpContext.User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value);
+                Comment insert = new Comment { Comments = comment, games_id = game, users_id = userID };
                 var api = await gameManager.CreateComment(insert);
                 if(api == HttpStatusCode.Created)
                 {
@@ -84,7 +91,8 @@ namespace GameDB.Controllers
             {
                 return false;
             }
-        } 
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddUserRating(int user_Rating)
         {
@@ -106,12 +114,13 @@ namespace GameDB.Controllers
                 return RedirectToAction("GameIndex", "Game", new { GameID = gameID });
             }
         }
-    
+
         public async Task<IActionResult> AddToLibrary(int GameID)
         {
             try
             {
-                Insert_User_Games insert = new Insert_User_Games { Users_id = 1, Games_id = GameID };
+                int userID = int.Parse(HttpContext.User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value);
+                Insert_User_Games insert = new Insert_User_Games { Users_id = userID, Games_id = GameID };
                 var status = await gameManager.CreateUserGames(insert);
                 if (status == HttpStatusCode.Created)
                 {

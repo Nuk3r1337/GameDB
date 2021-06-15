@@ -64,6 +64,7 @@ namespace GameDB.Domain.DomainClasses
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public List<Game> game { get; set; }
     }
     public class Comment
     {
