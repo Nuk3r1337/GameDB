@@ -61,9 +61,9 @@ namespace GameDB.Service.Manager
         {
             HttpClient client = new();
             client.BaseAddress = new Uri(appSettings.ApiUrl);
-            var accessToken = httpContextAccessor.HttpContext.GetTokenAsync("access_token").Result;
+            //var accessToken = httpContextAccessor.HttpContext.GetTokenAsync("access_token").Result;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "");
 
             return client;
         }

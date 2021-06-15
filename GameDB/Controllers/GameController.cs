@@ -93,6 +93,23 @@ namespace GameDB.Controllers
             }
         }
 
+        public async Task<bool> DeleteCommentAsync(int commentID)
+        {
+            try
+            {
+                var response = await gameManager.DeleteComment(commentID);
+                if(response == HttpStatusCode.OK)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddUserRating(int user_Rating)
         {

@@ -109,7 +109,7 @@
                         @if (int.Parse(Context.User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value) == comment.users_id)
                         {
                             <div class="card-footer">
-                                <button id="comment+@comment.Id" class="btn btn-danger">Delete Comment</button>
+                                <button id="comment+@comment.Id" class="btn btn-danger deleteButton">Delete Comment</button>
                             </div>
                         }
 
@@ -131,6 +131,25 @@
 @section Scripts
 {
     <script>
+        var buttonClass = document.getElementsByClassName("deleteButton");
+
+        for (var i = 0; i < buttonClass.length; i++) {
+            buttonClass[i].addEventListener("click", function () {
+                var itemId = this.id.split("+")[1];
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Game/DeleteComment',
+                    data: { commentID: itemId },
+                    success: function (out) {
+                        if (out) {
+                            location.reload();
+                        }
+                    }
+                });
+            })
+        }
+
         document.getElementById("postComment").addEventListener("click", function () {
             console.log(document.getElementById("commentSection").value);
             $.ajax({
