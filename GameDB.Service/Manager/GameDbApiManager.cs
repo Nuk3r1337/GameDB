@@ -135,7 +135,7 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                HttpResponseMessage response = await httpClient.DeleteAsync($"edit.php/update/delete/{Id}");
+                HttpResponseMessage response = await httpClient.DeleteAsync(httpClient.BaseAddress + $"/api/comments/{Id}");
                 return response.StatusCode;
             }
             catch(Exception)

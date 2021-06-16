@@ -87,13 +87,17 @@
                                     <td class="col-1">@item.Release_date</td>
                                     <td class="col-1">@item.Age_rating.Age_rating</td>
                                     <td class="col-1">
-                                        @foreach(var genres in item.Game_genre)
+                                        @foreach (var genres in item.Game_genre)
                                         {
                                             <p>@genres.Name+, </p>;
                                         }
                                     </td>
                                 }
-                                <td class="col-4"><button class="btn btn-secondary addButton" id="button+@item.Id">Add to game list</button></td>
+                                @if (Context.User.Identity.IsAuthenticated)
+                                {
+                                    <td class="col-4"><button class="btn btn-secondary addButton" id="button+@item.Id">Add to game list</button></td>
+                                }
+
                             </tr>
                             }
                         </tbody>

@@ -42,31 +42,29 @@ namespace GameDB.Controllers
                     //Barcode does not exist, get game data from another API
                     var externalGame = await _gameManager.GetExternalGame(Barcode);
 
+                    if(externalGame != null)
+                    {
                     //Get the informations and create an entry
-                    Game gameObj = new Game
-                    {
-                        Title = externalGame.FirstOrDefault().Title
-                    };
-                    var newGame = await _gameManager.CreateGame(gameObj);
+                        Game gameObj = new Game
+                        {
+                            Title = externalGame.FirstOrDefault().Title
+                        };
+                        var newGame = await _gameManager.CreateGame(gameObj);
 
-                    if(newGame != null)
-                    {
-                        //Create a barcode entry for the new game entry
-                        InsertBarcode createBarcode = new InsertBarcode { Code = Barcode, Games_id = newGame.Id };
-                        var newBarcode = await _gameManager.CreateBarcode(createBarcode);
-                        if(newBarcode == HttpStatusCode.Created)
+                        if(newGame != null)
                         {
-                            return RedirectToAction("GameIndex", "Game", new { GameID = newGame.Id });
-                        }
-                        else
-                        {
-                            return RedirectToAction("Index");
+                            //Create a barcode entry for the new game entry
+                            InsertBarcode createBarcode = new InsertBarcode { Code = Barcode, Games_id = newGame.Id };
+                            var newBarcode = await _gameManager.CreateBarcode(createBarcode);
+                            if(newBarcode == HttpStatusCode.Created)
+                            {
+                                return RedirectToAction("GameIndex", "Game", new { GameID = newGame.Id });
+                            }
                         }
                     }
-                    else
-                    {
-                        return RedirectToAction("Index");
-                    }
+
+                    return RedirectToAction("Index");
+                    
                 }
                 else
                 {
