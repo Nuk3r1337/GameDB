@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Models\Game;
 use App\Models\Barcode;
@@ -37,5 +38,13 @@ Route::get('/test', function (){
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    $CurrentUser = $request->user();
+
+    $role = Auth::user()->roles->pluck('name')->toArray()[0];
+
+    $CurrentUser['role'] = $role;
+    unset($CurrentUser->pivot);
+    unset($CurrentUser->roles);
+
+    return $CurrentUser;
 });
