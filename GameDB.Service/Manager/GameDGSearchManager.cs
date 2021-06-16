@@ -8,10 +8,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using ZXing;
 using System.Drawing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
+using Flurl;
 
 namespace GameDB.Service.Manager
 {
@@ -32,17 +32,17 @@ namespace GameDB.Service.Manager
 
         public GameDBSearchManager(IAppSettings appSettings, IHttpContextAccessor httpContextAccessor)
         {
-            this.httpClient = CreateHttpClientAsync(appSettings);
             this.httpContextAccessor = httpContextAccessor;
+            this.httpClient = CreateHttpClientAsync(appSettings);
         }
 
         private HttpClient CreateHttpClientAsync(IAppSettings appSettings)
         {
             HttpClient client = new();
             client.BaseAddress = new Uri(appSettings.ApiUrl);
-            //var accessToken = httpContextAccessor.HttpContext.GetTokenAsync("access_token").Result;
+            var accessToken = httpContextAccessor.HttpContext.GetTokenAsync("access_token").Result;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             return client;
         }
@@ -53,7 +53,8 @@ namespace GameDB.Service.Manager
             {
                 List<Game> game = null;
                 AgeRating age = null;
-                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + $"/api/agerating/{input}/games/");
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, $"/api/agerating/{input}/games/");
+                HttpResponseMessage Response = await httpClient.GetAsync(url);
                 if (Response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = Response.Content)
@@ -77,7 +78,8 @@ namespace GameDB.Service.Manager
             {
                 List<Game> game = null;
                 Genre genre = null;
-                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + $"/api/genre/{input}/games/");
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, $"/api/genre/{input}/games/");
+                HttpResponseMessage Response = await httpClient.GetAsync(url);
                 if (Response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = Response.Content)
@@ -101,7 +103,8 @@ namespace GameDB.Service.Manager
             {
                 List<Game> game = null;
                 Publisher publisher = null;
-                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + $"/api/genre/{input}/games/");
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, $"/api/genre/{input}/games/");
+                HttpResponseMessage Response = await httpClient.GetAsync(url);
                 if (Response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = Response.Content)
@@ -124,7 +127,8 @@ namespace GameDB.Service.Manager
             try
             {
                 List<Game> game = null;
-                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/games/" + input);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/games/" + input);
+                HttpResponseMessage Response = await httpClient.GetAsync(url);
                 if (Response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = Response.Content)
@@ -146,7 +150,8 @@ namespace GameDB.Service.Manager
             try
             {
                 List<User> user = null;
-                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/users/" + input);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/users/" + input);
+                HttpResponseMessage Response = await httpClient.GetAsync(url);
                 if (Response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = Response.Content)

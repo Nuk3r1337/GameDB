@@ -12,6 +12,7 @@ using ZXing;
 using System.Drawing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
+using Flurl;
 
 namespace GameDB.Service.Manager
 {
@@ -53,17 +54,17 @@ namespace GameDB.Service.Manager
 
         public GameDbApiManager(IAppSettings appSettings, IHttpContextAccessor httpContextAccessor)
         {
-            this.httpClient = CreateHttpClientAsync(appSettings);
             this.httpContextAccessor = httpContextAccessor;
+            this.httpClient = CreateHttpClientAsync(appSettings);
         }
 
         private HttpClient CreateHttpClientAsync(IAppSettings appSettings)
         {
             HttpClient client = new();
             client.BaseAddress = new Uri(appSettings.ApiUrl);
-            //var accessToken = httpContextAccessor.HttpContext.GetTokenAsync("access_token").Result;
+            var accessToken = httpContextAccessor.HttpContext.GetTokenAsync("access_token").Result;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             return client;
         }
@@ -198,7 +199,8 @@ namespace GameDB.Service.Manager
             try
             {
                 List<Game> game = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/games/" + name);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/games/" + name);
+                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + url);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -218,7 +220,8 @@ namespace GameDB.Service.Manager
             try
             {
                 Game game = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/games/" + Id);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/games/" + Id);
+                HttpResponseMessage response = await httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -239,7 +242,8 @@ namespace GameDB.Service.Manager
             try
             {
                 List<User> user = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/users/" + Id);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/users/" + Id);
+                HttpResponseMessage response = await httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -259,7 +263,8 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PutAsJsonAsync($"edit.php/update/update/", comment);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "edit.php/update/update/");
+                HttpResponseMessage response = await httpClient.PutAsJsonAsync(url, comment);
                 response.EnsureSuccessStatusCode();
 
                 comment = await response.Content.ReadFromJsonAsync<Comment>();
@@ -276,7 +281,8 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PutAsJsonAsync(httpClient.BaseAddress + "/api/games/", game);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/games/" + game.Id);
+                HttpResponseMessage response = await httpClient.PutAsJsonAsync(url, game);
                 response.EnsureSuccessStatusCode();
                 var code = response.StatusCode;
                 game = await response.Content.ReadFromJsonAsync<Game>();
@@ -309,7 +315,8 @@ namespace GameDB.Service.Manager
             try
             {
                 Barcode barcode = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/barcode/" + code);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/barcode/" + code);
+                HttpResponseMessage response = await httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -330,7 +337,8 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/barcode", barcode);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/barcode");
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(url, barcode);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }
@@ -344,7 +352,8 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PutAsJsonAsync(httpClient.BaseAddress + "/api/barcode", barcode);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/barcode");
+                HttpResponseMessage response = await httpClient.PutAsJsonAsync(url, barcode);
                 response.EnsureSuccessStatusCode();
 
                 barcode = await response.Content.ReadFromJsonAsync<Barcode>();
@@ -468,7 +477,8 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/", user_Games);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/");
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(url, user_Games);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }
@@ -482,7 +492,8 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/InsertHere", user_rating);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/InsertHere");
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(url, user_rating);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }
@@ -497,7 +508,8 @@ namespace GameDB.Service.Manager
             try
             {
                 User games = null;
-                HttpResponseMessage response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/user/" + userId + "/games");
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/user/" + userId + "/games");
+                HttpResponseMessage response = await httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     using (HttpContent content = response.Content)
@@ -524,7 +536,8 @@ namespace GameDB.Service.Manager
             try
             {
                 List<Publisher> publisher = null;
-                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/publishers");
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/publishers");
+                HttpResponseMessage Response = await httpClient.GetAsync(url);
                 using (HttpContent content = Response.Content)
                 {
                     if (Response.IsSuccessStatusCode)
@@ -546,7 +559,8 @@ namespace GameDB.Service.Manager
             try
             {
                 List<AgeRating> ages = null;
-                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/ageratings");
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/ageratings");
+                HttpResponseMessage Response = await httpClient.GetAsync(url);
                 using (HttpContent content = Response.Content)
                 {
                     if (Response.IsSuccessStatusCode)
@@ -568,7 +582,8 @@ namespace GameDB.Service.Manager
             try
             {
                 List<Genre> genres = null;
-                HttpResponseMessage Response = await httpClient.GetAsync(httpClient.BaseAddress + "/api/genres");
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/genres");
+                HttpResponseMessage Response = await httpClient.GetAsync(url);
                 using (HttpContent content = Response.Content)
                 {
                     if (Response.IsSuccessStatusCode)
@@ -589,7 +604,8 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/InsertHere", game);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/InsertHere");
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(url, game);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }

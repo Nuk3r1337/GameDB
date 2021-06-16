@@ -13,6 +13,8 @@ using ZXing;
 using System.IO;
 using System.Drawing;
 using GameDB.Service.Manager;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace GameDB.Controllers
 {
@@ -29,6 +31,15 @@ namespace GameDB.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet("~/logout")]
+        [HttpPost("~/logout")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            return SignOut(new AuthenticationProperties { RedirectUri = "/" },
+                CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         public async Task<IActionResult> SendAsync(string Barcode)

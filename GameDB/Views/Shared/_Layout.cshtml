@@ -36,6 +36,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" href="@Url.Action("UserIndex", "User", new { UserID = Context.User.Claims.FirstOrDefault( r => r.Type == ClaimTypes.NameIdentifier).Value })">@Context.User.Identity.Name</a>
                                 </li>
+                                <form method="post" action="/logout">
+                                    @Html.AntiForgeryToken()
+                                    <li class="nav-item">
+                                        <button type="submit" class="nav-link">logout</button>
+                                    </li>
+                                </form>
                             }
                             else
                             {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -24,8 +25,8 @@ namespace GameDB.Service.Middleware
             services.AddAuthentication(ops =>
             {
                 ops.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                ops.DefaultChallengeScheme = "GameDbAuth";
                 ops.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                ops.DefaultChallengeScheme = "GameDbAuth";
                 //ops.RequireAuthenticatedSignIn = true;
             })
             .AddJwtBearer(ops =>
@@ -35,14 +36,16 @@ namespace GameDB.Service.Middleware
             })
             .AddCookie(ops =>
             {
-                //ops.LoginPath = new PathString("/logon");
+                ops.LoginPath = new PathString("/logon");
+                ops.LogoutPath = new PathString("/logout");
                 ops.Cookie.SameSite = SameSiteMode.Strict;
                 ops.SlidingExpiration = true;
-                ops.ExpireTimeSpan = TimeSpan.FromHours(8);
+                ops.ExpireTimeSpan = TimeSpan.FromHours(24);
             }).AddOAuth("GameDbAuth", ops => {
-                ops.ClientId = "93ade7ca-6909-420f-9870-423fa27210dd";
-                ops.ClientSecret = "iLhKlQ6CAcXSOoDDiSHD2E3KL738UWF7HZSypAgL";
+                ops.ClientId = appSettings.ClientId;
+                ops.ClientSecret = appSettings.ClientSecret;
                 ops.CallbackPath = new PathString("/callback");
+                ops.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 ops.AuthorizationEndpoint = $"{appSettings.ApiUrl}/oauth/authorize";
                 ops.TokenEndpoint = $"{appSettings.ApiUrl}/oauth/token";
                 ops.SaveTokens = true;
@@ -63,7 +66,7 @@ namespace GameDB.Service.Middleware
                         response.EnsureSuccessStatusCode();
                         var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
                         context.RunClaimActions(json.RootElement);
-                    },
+                    }
                 };
             });
         }
