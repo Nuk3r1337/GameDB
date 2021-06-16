@@ -58,7 +58,7 @@ namespace GameDB.Controllers
                 {
                     foreach(int id in genreCheck)
                     {
-                        Game_Has_Genre ghg = new Game_Has_Genre { Games_id = game.Id, Genres_id = id };
+                        Game_Has_Genre ghg = new Game_Has_Genre { Games_id = game.Id, Genre_id = id };
                         var addGenre = await gameManager.CreateGenreForGame(ghg);
                     }
                     return RedirectToAction("GameIndex", "Game", new { GameID = game.Id});

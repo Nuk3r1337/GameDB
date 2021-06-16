@@ -89,7 +89,7 @@
                                     <td class="col-1">
                                         @foreach (var genres in item.Game_genre)
                                         {
-                                            <p>@genres.Name+, </p>;
+                                            @genres.genre.Name;
                                         }
                                     </td>
                                 }

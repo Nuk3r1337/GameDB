@@ -19,7 +19,6 @@ namespace GameDB.Service.Manager
     public interface IGameDbApiManager
     {
         Task<User> GetUser(int Id);
-        Task<HttpStatusCode> CreateUser(User user);
         Task<User> UpdateUser(User user);
         Task<HttpStatusCode> DeleteUser(int Id);
         Task<Game> CreateGame(Game game);
@@ -73,7 +72,8 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "/api/comments", comment);
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri + "/api/comments");
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(url, comment);
                 //response.EnsureSuccessStatusCode();
                 return response.StatusCode;
             }
@@ -117,21 +117,6 @@ namespace GameDB.Service.Manager
                 return HttpStatusCode.BadRequest;
             }
         }
-
-        public async Task<HttpStatusCode> CreateUser(User user)
-        {
-            try
-            {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "insert.php/", user);
-                response.EnsureSuccessStatusCode();
-                return response.StatusCode;
-            }
-            catch (Exception)
-            {
-                return HttpStatusCode.BadRequest;
-            }
-        }
-
         public async Task<HttpStatusCode> DeleteComment(int Id)
         {
             try
@@ -477,7 +462,7 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/");
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/usergames");
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync(url, user_Games);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;
@@ -604,7 +589,7 @@ namespace GameDB.Service.Manager
         {
             try
             {
-                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/InsertHere");
+                var url = Url.Combine(httpClient.BaseAddress.AbsoluteUri, "/api/gamegenres");
                 HttpResponseMessage response = await httpClient.PostAsJsonAsync(url, game);
                 response.EnsureSuccessStatusCode();
                 return response.StatusCode;

@@ -22,7 +22,7 @@ namespace GameDB.Domain.DomainClasses
     public class Game_Has_Genre
     {
         public int Games_id { get; set; }
-        public int Genres_id { get; set; }
+        public int Genre_id { get; set; }
     }
     public class User_Rating
     {
@@ -64,7 +64,13 @@ namespace GameDB.Domain.DomainClasses
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public GenreName genre { get; set; }
         public List<Game> game { get; set; }
+    }
+    public class GenreName
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
     public class Comment
     {
