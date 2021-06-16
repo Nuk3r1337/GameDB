@@ -54,6 +54,7 @@ namespace GameDB.Service.Middleware
                 ops.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
                 ops.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
                 ops.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+                ops.ClaimActions.MapJsonKey(ClaimTypes.Role, "role");
 
                 ops.Events = new OAuthEvents
                 {
@@ -65,7 +66,8 @@ namespace GameDB.Service.Middleware
                         var response = await context.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted);
                         response.EnsureSuccessStatusCode();
                         var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-                        context.RunClaimActions(json.RootElement);
+                        var userData = json.RootElement;
+                        context.RunClaimActions(userData);
                     }
                 };
             });
