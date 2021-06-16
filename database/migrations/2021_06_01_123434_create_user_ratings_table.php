@@ -16,8 +16,8 @@ class CreateUserRatingsTable extends Migration
         Schema::create('user_ratings', function (Blueprint $table) {
             $table->id();
             $table->integer("rating");
-            $table->foreignId("games_id");
-            $table->foreignId("users_id");
+            $table->foreignId("games_id")->constrained();
+            $table->foreignId("users_id")->constrained();
             $table->timestamps();
         });
     }

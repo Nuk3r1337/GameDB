@@ -15,7 +15,7 @@ class CreateBarcodesTable extends Migration
     {
         Schema::create('barcodes', function (Blueprint $table) {
             $table->string("code", 30)->primary();
-            $table->foreignId("games_id");
+            $table->foreignId("games_id")->constrained();
             $table->timestamps();
         });
     }

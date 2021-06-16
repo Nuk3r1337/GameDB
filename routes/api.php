@@ -23,6 +23,7 @@ Route::resource('ageratings','App\Http\Controllers\Age_ratingController');
 Route::resource('publishers','App\Http\Controllers\PublisherController');
 Route::resource('genres','App\Http\Controllers\GenreController');
 Route::resource('gamegenres', 'App\Http\Controllers\GamesHasGenresController');
+Route::resource('usergames', 'App\Http\Controllers\UserHasGamesController');
 
 Route::get('agerating/{id}/games', 'App\Http\Controllers\Age_ratingController@show');
 Route::get('publisher/{id}/games','App\Http\Controllers\publisherController@show');

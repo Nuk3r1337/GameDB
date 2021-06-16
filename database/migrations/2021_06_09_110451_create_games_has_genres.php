@@ -15,8 +15,8 @@ class CreateGamesHasGenres extends Migration
     {
         Schema::create('games_has_genres', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("games_id");
-            $table->foreignId("genre_id");
+            $table->foreignId("games_id")->constrained();
+            $table->foreignId("genre_id")->constrained();
             $table->timestamps();
         });
     }

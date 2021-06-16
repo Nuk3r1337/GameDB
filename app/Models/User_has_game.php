@@ -9,18 +9,18 @@ class User_has_game extends Model
 {
     protected $fillable = [
         'games_id',
-        'user_id'
+        'users_id'
     ];
 
     protected $casts = [
         'games_id' => 'integer',
-        'user_id' => 'integer'
+        'users_id' => 'integer'
     ];
 
     public function game(){
         return $this->belongsTo(Game::class, 'id','games_id');
     }
     public function user(){
-        return $this->belongsTo(Genre::class, 'id', 'user_id');
+        return $this->belongsTo(Genre::class, 'id', 'users_id');
     }
 }

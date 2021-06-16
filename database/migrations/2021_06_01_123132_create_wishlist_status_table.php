@@ -15,7 +15,7 @@ class CreateWishlistStatusTable extends Migration
     {
         Schema::create('wishlist_status', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("user_has_games_id");
+            $table->foreignId("user_has_games_id")->constrained();
             $table->timestamps();
         });
     }

@@ -18,8 +18,8 @@ class CreateGamesTable extends Migration
             $table->string("title");
             $table->date("release_date")->nullable();
             $table->string("description")->nullable();
-            $table->foreignId("publishers_id")->default('1');
-            $table->foreignId("age_ratings_id")->default('1');
+            $table->foreignId("publishers_id")->default('1')->constrained();
+            $table->foreignId("age_ratings_id")->default('1')->constrained();
             $table->string("picture")->nullable();
             $table->timestamps();
         });
