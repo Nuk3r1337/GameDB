@@ -18,8 +18,8 @@
                 <textarea asp-for="game.Description" class="form-control" required>@Model.game.Description</textarea>
             </div>
             <div class="form-group" style="margin-top: 1%;">
-                <label asp-for="game.Publisher.Id">Publisher</label>
-                <select asp-for="game.Publisher.Id" class="form-group">
+                <label asp-for="game.Publishers_id">Publisher</label>
+                <select asp-for="game.Publishers_id" class="form-group">
                     @foreach (var publishers in Model.Publishers)
                     {
                         if (publishers.Name != "unknown")
@@ -30,8 +30,8 @@
                 </select>
             </div>
             <div class="form-group" style="margin-top: 1%;">
-                <label asp-for="game.Age_rating.Id">Age Rating</label>
-                <select asp-for="game.Publisher.Id" class="form-group">
+                <label asp-for="game.Age_ratings_id">Age Rating</label>
+                <select asp-for="game.Age_ratings_id" class="form-group">
                     @foreach (var ages in Model.AgeRatings)
                     {
                         if (ages.Age_rating != "unknown")
@@ -56,7 +56,7 @@
                     {
                         <div class="form-check form-check-inline">
                             <input type="checkbox" class="form-check-input" name="genreCheck" value="@genreList.genre.Id" id="Box+@genreList.genre..Id" />
-                            <label for="Box+@genreList.genre.Id" class="form-check-label">@genreList..Name</label>
+                            <label for="Box+@genreList.genre.Id" class="form-check-label">@genreList.Name</label>
                         </div>
                     }
                 }

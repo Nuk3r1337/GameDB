@@ -32,7 +32,10 @@
                 {
                     foreach (var genre in Model.Game_genre)
                     {
-                        @genre.genre.Name
+                        if (genre.genre.Name != "unknown")
+                        {
+                            @(genre.genre.Name + ", ");
+                        }
                     }
                 }
             </div>

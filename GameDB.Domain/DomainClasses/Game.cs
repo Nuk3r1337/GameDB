@@ -14,6 +14,8 @@ namespace GameDB.Domain.DomainClasses
         public DateTimeOffset? Release_date { get; set; }
         public List<Genre> Game_genre { get; set; }
         public Publisher Publisher { get; set; }
+        public int Publishers_id { get; set; }
+        public int Age_ratings_id { get; set; }
         public AgeRating Age_rating { get; set; }
         public string Picture { get; set; }
         public List<Comment> Comments { get; set; }

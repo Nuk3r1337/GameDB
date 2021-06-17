@@ -89,7 +89,10 @@
                                     <td class="col-1">
                                         @foreach (var genres in item.Game_genre)
                                         {
-                                            @genres.genre.Name;
+                                            if (genres.genre.Name != "unknown")
+                                            {
+                                                @(genres.genre.Name + ", ");
+                                            }
                                         }
                                     </td>
                                 }
