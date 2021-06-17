@@ -30,10 +30,7 @@ namespace GameDB.Service.DependencyResolution
 
         private static void AspServiceRegistrations(this IServiceCollection services)
         {
-            services.AddControllersWithViews();
-
             services.AddMemoryCache();
-            services.AddDistributedMemoryCache();
 
             services.AddDataProtection();
             services.AddSession(ops =>
@@ -50,7 +47,6 @@ namespace GameDB.Service.DependencyResolution
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext?.User ?? new ClaimsPrincipal());
-
         }
     }
 }
