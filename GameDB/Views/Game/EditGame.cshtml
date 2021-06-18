@@ -64,5 +64,9 @@
         <input type="submit" class="btn btn-primary" value="Edit Game" />
     </div>
 }
-
-<a class="btn btn-info" href='javascript:history.go(-1)'>Cancel</a>
+<div style="margin-top:2%">
+    <a class="btn btn-info" href='javascript:history.go(-1)'>Cancel</a>
+</div>
+<div style="margin-top:2%">
+    <a class="btn btn-danger" href='@Url.Action("DeleteGame", "Game", new { GameID = Model.game.Id})'>Delete Game</a>
+</div>

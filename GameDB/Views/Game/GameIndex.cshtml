@@ -4,11 +4,14 @@
     ViewData["Title"] = "Index";
 }
 <div class="container">
-    <input type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("EditGame", "Game", new { GameID = Model.Id})'" value="Edit Game"/>
+    @if (Context.User.IsInRole("admin"))
+    {
+        <input type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("EditGame", "Game", new { GameID = Model.Id})'" value="Edit Game" />
+    }
     <h1>@Model.Title</h1>
     <div class="row">
         <div>
-            <img src="" alt="Pic Here Lol" class="col-sm-4"/>
+            <img src="" alt="Pic Here Lol" class="col-sm-4" />
         </div>
         <div class="container col-sm-4">
             <div class="row">
@@ -91,7 +94,7 @@
             {
                 <div class="form-group row">
                     <textarea id="commentSection" placeholder="Post Comments" class="form-control" disabled></textarea>
-                    <input type="submit" value="Post Comment" id="postComment" disabled/>
+                    <input type="submit" value="Post Comment" id="postComment" disabled />
                 </div>
             }
 
@@ -102,21 +105,21 @@
                     {
                         @foreach (var comment in Model.Comments)
                         {
-                    <div class="card row">
-                        <div class="card-header">
-                            @comment.users_id
-                        </div>
-                        <div class="card-body">
-                            <p>@comment.Comments</p>
-                        </div>
-                        @if (int.Parse(Context.User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value) == comment.users_id)
-                        {
-                            <div class="card-footer">
-                                <button id="comment+@comment.Id" class="btn btn-danger deleteButton">Delete Comment</button>
-                            </div>
-                        }
+                            <div class="card row">
+                                <div class="card-header">
+                                    @comment.users_id
+                                </div>
+                                <div class="card-body">
+                                    <p>@comment.Comments</p>
+                                </div>
+                                @if (int.Parse(Context.User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value) == comment.users_id || Context.User.IsInRole("moderator") || Context.User.IsInRole("admin"))
+                                {
+                                    <div class="card-footer">
+                                        <button id="comment+@comment.Id" class="btn btn-danger deleteButton">Delete Comment</button>
+                                    </div>
+                                }
 
-                    </div>
+                            </div>
                         }
                     }
                     else
@@ -146,6 +149,7 @@
                     data: { commentID: itemId },
                     success: function (out) {
                         if (out) {
+                            alert("Comment has been deleted");
                             location.reload();
                         }
                     }
@@ -166,6 +170,7 @@
                 success: function (out) {
                     if (out)
                     {
+                        alert("Comment has been added");
                         location.reload();
                     }
                 }

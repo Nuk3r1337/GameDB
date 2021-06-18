@@ -35,8 +35,9 @@ namespace GameDB.Controllers
             gameID = game.Id;
             return View(game);
         }
+        
+        [Authorize(Roles = "admin")]
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> EditGameAsync(int GameID)
         {
             GameEdit Ge = new GameEdit();
@@ -47,8 +48,9 @@ namespace GameDB.Controllers
 
             return View(Ge);
         }
+
+        [Authorize(Roles = "admin")]
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> EditGame(Game game, List<int> genreCheck)
         {
             try
@@ -151,6 +153,27 @@ namespace GameDB.Controllers
             catch (Exception)
             {
                 return RedirectToAction("GameIndex", "Game", new { GameID = GameID });
+            }
+        }
+
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> DeleteGame(int GameID)
+        {
+            try
+            {
+                var status = await gameManager.DeleteGame(GameID);
+                if(status == HttpStatusCode.OK)
+                {
+                    return RedirectToAction("SearchIndex", "Search");
+                }
+                else
+                {
+                    return RedirectToAction("EditGame", "Game", new { GameID = GameID });
+                }
+            }
+            catch(Exception)
+            {
+                return RedirectToAction("EditGame", "Game", new { GameID = GameID });
             }
         }
     }

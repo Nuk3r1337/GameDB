@@ -6,7 +6,7 @@
 
 <h1>@Model.Name</h1>
 <div class="container">
-    @if (int.Parse(Context.User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value) == Model.Id)
+    @if (int.Parse(Context.User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value) == Model.Id || Context.User.IsInRole("admin"))
     {
         <input type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("EditUser", "User", new { UserID = Model.Id })'" value="Edit User" />
     }

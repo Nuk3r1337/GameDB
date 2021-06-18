@@ -25,7 +25,6 @@ namespace GameDB.Controllers
             return View(user);
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> EditUserAsync(int UserID)
         {
